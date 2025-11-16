@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contador de Calorias - Saúde Natural Global</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Contador de calorias simples e prático para acompanhar sua alimentação diária." />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0fff4, #e6fffa);
+      color: #123026;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .app {
+      background: #ffffff;
+      max-width: 900px;
+      width: 100%;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
+      padding: 24px 22px 26px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #065f46;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+
+    header a {
+      font-size: 0.85rem;
+      color: #059669;
+      text-decoration: none;
+    }
+
+    header a:hover {
+      text-decoration: underline;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: #f9fafb;
+      border-radius: 14px;
+      padding: 16px 14px 18px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      color: #065f46;
+    }
+
+    .card small {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px 9px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background: #ffffff;
+    }
+
+    input:focus, select:focus {
+      border-color: #059669;
+      box-shadow: 0 0 0 1px rgba(5, 150, 105, 0.3);
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    .field-row-3 {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #ecfdf5;
+      box-shadow: 0 8px 18px rgba(5, 150, 105, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(5, 150, 105, 0.4);
+    }
+
+    .btn-ghost {
+      background: #eef2ff;
+      color: #4b5563;
+      padding-inline: 10px;
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover {
+      background: #e0e7ff;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+      padding-inline: 10px;
+      box-shadow: none;
+    }
+
+    .btn-danger:hover {
+      background: #fecaca;
+    }
+
+    .goal-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .goal-row span {
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+
+    .summary {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 12px;
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 0.85rem;
+    }
+
+    .summary div span:first-child {
+      display: block;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
+
+    .summary div span:last-child {
+      font-weight: 600;
+      color: #065f46;
+    }
+
+    .progress-bar {
+      margin-top: 10px;
+      width: 100%;
+      height: 16px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #84cc16);
+      transition: width 0.25s ease;
+    }
+
+    .progress-label {
+      font-size: 0.78rem;
+      text-align: right;
+      margin-top: 4px;
+      color: #6b7280;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.82rem;
+    }
+
+    th, td {
+      padding: 6px 4px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    th {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #6b7280;
+    }
+
+    tbody tr:hover {
+      background: #f3f4f6;
+    }
+
+    .empty-state {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    footer {
+      margin-top: 16px;
+      font-size: 0.75rem;
+      text-align: center;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <h1>Contador de Calorias</h1>
+        <p>Controle simples do consumo diário para apoiar sua saúde.</p>
+      </div>
+      <div>
+        <a href="https://saudenaturalglobal.com.br" target="_blank" rel="noopener noreferrer">
+          ← Voltar para Saúde Natural Global
+        </a>
+      </div>
+    </header>
+
+    <section class="grid">
+      <!-- COLUNA ESQUERDA: CONFIGURAÇÕES / META / RESUMO -->
+      <section class="card">
+        <h2>Meta diária</h2>
+        <small>Defina sua meta de calorias por dia (ex: 1800, 2000, 2200 kcal).</small>
+
+        <div class="goal-row">
+          <div style="flex:1;">
+            <label for="dailyGoal">Meta (kcal)</label>
+            <input type="number" id="dailyGoal" min="500" max="6000" step="50" value="2000" />
+          </div>
+          <button type="button" class="btn-ghost" id="btnResetDay">Novo dia</button>
+        </div>
+
+        <div class="summary">
+          <div>
+            <span>Consumido</span>
+            <span id="sumConsumed">0 kcal</span>
+          </div>
+          <div>
+            <span>Meta</span>
+            <span id="sumGoal">2000 kcal</span>
+          </div>
+          <div>
+            <span>Restante</span>
+            <span id="sumRemaining">2000 kcal</span>
+          </div>
+        </div>
+
+        <div class="progress-bar" aria-label="Progresso da meta diária">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">0% da meta atingida</div>
+      </section>
+
+      <!-- COLUNA DIREITA: ADIÇÃO DE ALIMENTOS -->
+      <section class="card">
+        <h2>Adicionar alimento</h2>
+        <small>Escolha um alimento da lista ou cadastre manualmente.</small>
+
+        <div class="field-row">
+          <div>
+            <label for="foodSelect">Alimentos comuns</label>
+            <select id="foodSelect">
+              <option value="" data-calories="0">Selecione um alimento...</option>
+              <option value="Arroz branco cozido" data-portion="100 g" data-calories="130">Arroz branco cozido (100 g ≈ 130 kcal)</option>
+              <option value="Feijão cozido" data-portion="100 g" data-calories="95">Feijão cozido (100 g ≈ 95 kcal)</option>
+              <option value="Peito de frango grelhado" data-portion="100 g" data-calories="165">Peito de frango grelhado (100 g ≈ 165 kcal)</option>
+              <option value="Ovo cozido" data-portion="1 unidade" data-calories="78">Ovo cozido (1 unid ≈ 78 kcal)</option>
+              <option value="Banana prata" data-portion="1 unidade média" data-calories="89">Banana prata (1 unid média ≈ 89 kcal)</option>
+              <option value="Maçã" data-portion="1 unidade média" data-calories="95">Maçã (1 unid média ≈ 95 kcal)</option>
+              <option value="Pão francês" data-portion="1 unidade" data-calories="135">Pão francês (1 unid ≈ 135 kcal)</option>
+              <option value="Aveia em flocos" data-portion="30 g" data-calories="117">Aveia em flocos (30 g ≈ 117 kcal)</option>
+              <option value="Iogurte natural integral" data-portion="170 g" data-calories="100">Iogurte natural integral (170 g ≈ 100 kcal)</option>
+              <option value="Castanha-do-pará" data-portion="10 g" data-calories="66">Castanha-do-pará (10 g ≈ 66 kcal)</option>
+              <option value="Abacate" data-portion="100 g" data-calories="160">Abacate (100 g ≈ 160 kcal)</option>
+              <option value="Salada verde simples" data-portion="1 prato" data-calories="25">Salada verde simples (1 prato ≈ 25 kcal)</option>
+            </select>
+          </div>
+          <div>
+            <label for="foodQty">Qtd. porção</label>
+            <input type="number" id="foodQty" min="0.25" step="0.25" value="1" />
+          </div>
+        </div>
+
+        <small>Ou cadastre manualmente (quando não estiver na lista):</small>
+
+        <div class="field-row-3">
+          <div>
+            <label for="customName">Nome</label>
+            <input type="text" id="customName" placeholder="Ex: Smoothie verde" />
+          </div>
+          <div>
+            <label for="customPortion">Porção</label>
+            <input type="text" id="customPortion" placeholder="Ex: 250 ml" />
+          </div>
+          <div>
+            <label for="customCalories">kcal/porção</label>
+            <input type="number" id="customCalories" min="0" step="1" placeholder="Ex: 150" />
+          </div>
+        </div>
+
+        <button type="button" class="btn-primary" id="btnAddFood">
+          ➕ Adicionar ao dia
+        </button>
+
+        <p style="font-size:0.75rem; color:#9ca3af; margin-top:6px;">
+          Valores são estimativas. Consulte um profissional de saúde para orientações personalizadas.
+        </p>
+      </section>
+    </section>
+
+    <!-- LISTA DO DIA -->
+    <section class="card" style="margin-top: 18px;">
+      <h2>Diário de hoje</h2>
+      <small>Veja tudo o que você adicionou ao seu dia.</small>
+
+      <div id="diaryContainer">
+        <table id="foodsTable">
+          <thead>
+            <tr>
+              <th>Alimento</th>
+              <th>Porção</th>
+              <th>Qtd.</th>
+              <th>Calorias</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="foodsBody">
+          </tbody>
+        </table>
+        <p class="empty-state" id="emptyState">Nenhum alimento adicionado ainda.</p>
+      </div>
+    </section>
+
+    <footer>
+      Ferramenta educativa. Não substitui orientação de nutricionista ou médico. © Saúde Natural Global
+    </footer>
+  </main>
+
+  <script>
+    // ------------ ESTADO ------------
+    let items = [];
+    let dailyGoal = 2000;
+
+    const elDailyGoal = document.getElementById("dailyGoal");
+    const elSumConsumed = document.getElementById("sumConsumed");
+    const elSumGoal = document.getElementById("sumGoal");
+    const elSumRemaining = document.getElementById("sumRemaining");
+    const elProgressFill = document.getElementById("progressFill");
+    const elProgressLabel = document.getElementById("progressLabel");
+    const elFoodsBody = document.getElementById("foodsBody");
+    const elEmptyState = document.getElementById("emptyState");
+
+    const elFoodSelect = document.getElementById("foodSelect");
+    const elFoodQty = document.getElementById("foodQty");
+    const elCustomName = document.getElementById("customName");
+    const elCustomPortion = document.getElementById("customPortion");
+    const elCustomCalories = document.getElementById("customCalories");
+
+    const elBtnAddFood = document.getElementById("btnAddFood");
+    const elBtnResetDay = document.getElementById("btnResetDay");
+
+    // ------------ LOCALSTORAGE: CHAVE DO DIA ------------
+    function getTodayKey() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      return "sng_calorias_" + yyyy + "-" + mm + "-" + dd;
+    }
+
+    function saveState() {
+      const key = getTodayKey();
+      const data = {
+        dailyGoal,
+        items,
+      };
+      try {
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {
+        console.warn("Não foi possível salvar no localStorage", e);
+      }
+    }
+
+    function loadState() {
+      const key = getTodayKey();
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (data.dailyGoal) {
+          dailyGoal = data.dailyGoal;
+          elDailyGoal.value = dailyGoal;
+        }
+        if (Array.isArray(data.items)) {
+          items = data.items;
+        }
+      } catch (e) {
+        console.warn("Não foi possível carregar do localStorage", e);
+      }
+    }
+
+    // ------------ RENDERIZAÇÃO ------------
+    function formatKcal(value) {
+      return value.toFixed(0) + " kcal";
+    }
+
+    function render() {
+      // resumo
+      const consumed = items.reduce((sum, item) => sum + item.calories, 0);
+      const remaining = Math.max(dailyGoal - consumed, 0);
+
+      elSumConsumed.textContent = formatKcal(consumed);
+      elSumGoal.textContent = formatKcal(dailyGoal);
+      elSumRemaining.textContent = formatKcal(remaining);
+
+      // progresso
+      let pct = dailyGoal > 0 ? (consumed / dailyGoal) * 100 : 0;
+      if (pct > 150) pct = 150; // limite visual
+      elProgressFill.style.width = pct + "%";
+      elProgressLabel.textContent = `${Math.min(
+        100,
+        Math.round((consumed / dailyGoal) * 100 || 0)
+      )}% da meta atingida`;
+
+      // tabela
+      elFoodsBody.innerHTML = "";
+      if (items.length === 0) {
+        elEmptyState.style.display = "block";
+      } else {
+        elEmptyState.style.display = "none";
+      }
+
+      items.forEach((item) => {
+        const tr = document.createElement("tr");
+
+        const tdName = document.createElement("td");
+        tdName.textContent = item.name;
+
+        const tdPortion = document.createElement("td");
+        tdPortion.textContent = item.portion;
+
+        const tdQty = document.createElement("td");
+        tdQty.textContent = item.quantity.toString();
+
+        const tdCalories = document.createElement("td");
+        tdCalories.textContent = formatKcal(item.calories);
+
+        const tdActions = document.createElement("td");
+        tdActions.style.textAlign = "right";
+
+        const btnRemove = document.createElement("button");
+        btnRemove.type = "button";
+        btnRemove.className = "btn-danger";
+        btnRemove.textContent = "Excluir";
+        btnRemove.addEventListener("click", () => {
+          removeItem(item.id);
+        });
+
+        tdActions.appendChild(btnRemove);
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdPortion);
+        tr.appendChild(tdQty);
+        tr.appendChild(tdCalories);
+        tr.appendChild(tdActions);
+
+        elFoodsBody.appendChild(tr);
+      });
+
+      saveState();
+    }
+
+    function removeItem(id) {
+      items = items.filter((it) => it.id !== id);
+      render();
+    }
+
+    // ------------ LÓGICA DE ADIÇÃO ------------
+    function handleAddFood() {
+      let name = "";
+      let portion = "";
+      let calPerPortion = 0;
+
+      const customName = elCustomName.value.trim();
+      const customPortion = elCustomPortion.value.trim();
+      const customCalories = parseFloat(elCustomCalories.value);
+
+      const selectedOption = elFoodSelect.options[elFoodSelect.selectedIndex];
+      const selectedName = selectedOption.value;
+      const selectedPortion = selectedOption.getAttribute("data-portion") || "";
+      const selectedCalories = parseFloat(
+        selectedOption.getAttribute("data-calories") || "0"
+      );
+
+      // priorizar custom se preenchido
+      if (customName && customPortion && !isNaN(customCalories) && customCalories > 0) {
+        name = customName;
+        portion = customPortion;
+        calPerPortion = customCalories;
+      } else if (selectedName && selectedCalories > 0) {
+        name = selectedName;
+        portion = selectedPortion || "porção";
+        calPerPortion = selectedCalories;
+      } else {
+        alert("Escolha um alimento da lista ou preencha os campos manuais corretamente.");
+        return;
+      }
+
+      let qty = parseFloat(elFoodQty.value);
+      if (isNaN(qty) || qty <= 0) {
+        alert("Informe uma quantidade de porção válida (ex: 0.5, 1, 2).");
+        return;
+      }
+
+      const totalCalories = calPerPortion * qty;
+
+      const newItem = {
+        id: Date.now() + Math.random(),
+        name,
+        portion,
+        quantity: qty,
+        calories: totalCalories,
+      };
+
+      items.push(newItem);
+
+      // limpar campos manuais
+      elCustomName.value = "";
+      elCustomPortion.value = "";
+      elCustomCalories.value = "";
+
+      render();
+    }
+
+    // ------------ EVENTOS ------------
+    elBtnAddFood.addEventListener("click", handleAddFood);
+
+    elDailyGoal.addEventListener("change", () => {
+      let val = parseInt(elDailyGoal.value, 10);
+      if (isNaN(val) || val < 500) val = 500;
+      if (val > 6000) val = 6000;
+      dailyGoal = val;
+      elDailyGoal.value = dailyGoal;
+      render();
+    });
+
+    elBtnResetDay.addEventListener("click", () => {
+      if (confirm("Tem certeza que deseja limpar o dia atual?")) {
+        items = [];
+        // mantém a meta
+        render();
+      }
+    });
+
+    // quando usuário seleciona alimento da lista, limpar campos manuais
+    elFoodSelect.addEventListener("change", () => {
+      elCustomName.value = "";
+      elCustomPortion.value = "";
+      elCustomCalories.value = "";
+    });
+
+    // ------------ INICIALIZAÇÃO ------------
+    loadState();
+    render();
+  </script>
+</body>
+</html>
