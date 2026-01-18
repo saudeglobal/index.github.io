@@ -41,46 +41,84 @@
         Voltar para o site
       </a>
     </div>
+<!-- Lista (automática) -->
+<section class="mt-10">
+  <div id="articles-grid" class="grid gap-6 md:grid-cols-2"></div>
 
-    <!-- Lista (por enquanto manual) -->
-    <section class="mt-10 grid gap-6 md:grid-cols-2">
-      <article class="rounded-2xl border border-slate-200 bg-white p-6 hover:shadow-lg transition">
-        <span class="inline-flex rounded-full bg-emerald-50 text-emerald-700 px-3 py-1 text-xs font-semibold">Imunidade</span>
-        <h2 class="mt-3 text-xl font-bold leading-tight">
-          <a class="hover:underline" href="./imunidade-rotina-vitamina-d-zinco.html">
-            Imunidade: rotina simples que faz diferença (e quando pensar em suplementos)
-          </a>
-        </h2>
-        <p class="mt-2 text-slate-600 text-sm">
-          Rotina baseada em sono, alimentação e hábitos — e como avaliar vitamina D e zinco.
-        </p>
-        <div class="mt-4">
-          <a class="text-emerald-700 font-semibold hover:underline" href="./imunidade-rotina-vitamina-d-zinco.html">Ler artigo →</a>
-        </div>
-      </article>
+  <div id="articles-error" class="hidden mt-6 rounded-2xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-800"></div>
+</section>
 
-      <article class="rounded-2xl border border-slate-200 bg-white p-6 hover:shadow-lg transition">
-        <span class="inline-flex rounded-full bg-emerald-50 text-emerald-700 px-3 py-1 text-xs font-semibold">Energia</span>
-        <h2 class="mt-3 text-xl font-bold leading-tight">
-          <a class="hover:underline" href="./energia-mais-disposicao-rotina.html">
-            Energia: mais disposição com uma rotina simples (sem depender de “milagres”)
-          </a>
-        </h2>
-        <p class="mt-2 text-slate-600 text-sm">
-          Ajustes práticos de sono, hidratação, luz e alimentação para aumentar energia no dia a dia.
-        </p>
-        <div class="mt-4">
-          <a class="text-emerald-700 font-semibold hover:underline" href="./energia-mais-disposicao-rotina.html">Ler artigo →</a>
-        </div>
-      </article>
-    </section>
+<script>
+  (function () {
+    const grid = document.getElementById("articles-grid");
+    const errorBox = document.getElementById("articles-error");
 
-    <section class="mt-10 rounded-2xl border border-emerald-100 bg-white p-6">
-      <h3 class="text-lg font-extrabold">Quer receber novos artigos?</h3>
-      <p class="mt-2 text-sm text-slate-600">
-        Em breve vamos automatizar essa página via pipeline para listar tudo automaticamente.
-      </p>
-    </section>
+    function escapeHtml(str) {
+      return String(str || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function tagColor(category) {
+      const c = (category || "").toLowerCase();
+      if (c.includes("imun")) return "bg-sky-50 text-sky-700";
+      if (c.includes("energia")) return "bg-emerald-50 text-emerald-700";
+      return "bg-slate-100 text-slate-700";
+    }
+
+    function card(article) {
+      const title = escapeHtml(article.title);
+      const category = escapeHtml(article.category || "Artigo");
+      const excerpt = escapeHtml(article.excerpt || "");
+      const slug = escapeHtml(article.slug || "");
+      const href = "./" + slug + ".html";
+
+      return `
+        <article class="rounded-2xl border border-slate-200 bg-white p-6 hover:shadow-lg transition">
+          <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold ${tagColor(category)}">${category}</span>
+          <h2 class="mt-3 text-xl font-bold leading-tight">
+            <a class="hover:underline" href="${href}">${title}</a>
+          </h2>
+          <p class="mt-2 text-slate-600 text-sm">${excerpt}</p>
+          <div class="mt-4">
+            <a class="text-emerald-700 font-semibold hover:underline" href="${href}">Ler artigo →</a>
+          </div>
+        </article>
+      `;
+    }
+
+    // Tenta carregar o JSON público gerado pelo pipeline
+    fetch("./articles.json", { cache: "no-store" })
+      .then((r) => {
+        if (!r.ok) throw new Error("Não foi possível carregar ./articles.json");
+        return r.json();
+      })
+      .then((data) => {
+        const items = Array.isArray(data) ? data : (data.articles || []);
+        if (!items.length) throw new Error("articles.json está vazio (sem artigos).");
+
+        // Ordena por updated_at se existir (mais recente primeiro)
+        items.sort((a, b) => {
+          const da = new Date(a.updated_at || a.date || 0).getTime();
+          const db = new Date(b.updated_at || b.date || 0).getTime();
+          return db - da;
+        });
+
+        grid.innerHTML = items.map(card).join("");
+      })
+      .catch((err) => {
+        errorBox.classList.remove("hidden");
+        errorBox.innerText =
+          "Erro ao carregar lista automática de artigos. " +
+          "Verifique se /artigos/articles.json existe e está válido. Detalhe: " + err.message;
+      });
+  })();
+</script>
+
+ 
   </main>
 
   <footer class="mt-12 border-t bg-white">
