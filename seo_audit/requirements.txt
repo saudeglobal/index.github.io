@@ -1,1 +1,2 @@
-# No external dependencies required
+beautifulsoup4==4.12.3
+lxml==5.2.2
