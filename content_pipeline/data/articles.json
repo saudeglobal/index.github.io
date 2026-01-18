@@ -1,0 +1,30 @@
+{
+  "articles": [
+    {
+      "slug": "energia-mais-disposicao-rotina",
+      "pillar": "Energia",
+      "title": "Energia: hábitos simples para ter mais disposição no dia a dia",
+      "h1": "Energia: hábitos simples para ter mais disposição no dia a dia",
+      "description": "Rotina prática para melhorar energia: sono, luz, alimentação e movimento. E quando faz sentido considerar suplementos.",
+      "intro": "Disposição não depende só de motivação — depende de sono, luz, alimentação e movimento. Ajustes pequenos, consistentes e mensuráveis costumam dar os melhores resultados.",
+      "read_time": "7–9 min",
+      "date_modified": "2026-01-18",
+      "cta_url": "https://www.amazon.com.br/s?k=complexo+b+coenzima+q10+magnesio&tag=saudenaturalglobal.com.br-20",
+      "evidence": "Em geral, energia percebida melhora quando você alinha sono regular, exposição à luz pela manhã, alimentação com proteína e fibras, e movimento diário. Suplementos podem ajudar em casos específicos (por exemplo, deficiência documentada), mas não substituem hábitos.",
+      "body_html": "<h2>1) Comece pelo básico (o que mais dá retorno)</h2><ul><li><strong>Sono</strong>: horário consistente e redução de luz forte à noite.</li><li><strong>Luz de manhã</strong>: 10–20 min de luz natural logo cedo.</li><li><strong>Movimento</strong>: caminhada leve diária ou treino 3x/semana.</li><li><strong>Alimentação</strong>: proteína no café da manhã e fibras no almoço/jantar.</li></ul><h2>2) Sinais de que vale investigar</h2><ul><li>Cansaço persistente por semanas</li><li>Sonolência após refeições</li><li>Queda de rendimento e irritabilidade</li></ul><h2>3) Quando pensar em suplementos</h2><p>Priorize testes e orientação. Itens comuns na prática: <em>magnésio</em>, <em>complexo B</em>, <em>vitamina D</em> (se baixa) e <em>ômega-3</em>.</p><h2>4) Mini checklist (7 dias)</h2><ol><li>Deitar e acordar +/- no mesmo horário</li><li>Luz da manhã</li><li>30 min de caminhada</li><li>Água + proteína cedo</li></ol>"
+    },
+    {
+      "slug": "imunidade-rotina-vitamina-d-zinco",
+      "pillar": "Imunidade",
+      "title": "Imunidade: rotina simples que faz diferença (e quando pensar em suplementos)",
+      "h1": "Imunidade: rotina simples que faz diferença (e quando pensar em suplementos)",
+      "description": "Como fortalecer a imunidade com hábitos consistentes e quando faz sentido considerar vitamina D, zinco e outros nutrientes.",
+      "intro": "Imunidade não é um ‘produto’; é um sistema. Você melhora com sono, alimentação e hábitos consistentes. Quando faz sentido, alguns nutrientes podem complementar.",
+      "read_time": "7–9 min",
+      "date_modified": "2026-01-18",
+      "cta_url": "https://www.amazon.com.br/s?k=vitamina+d+zinco+vitamina+c&tag=saudenaturalglobal.com.br-20",
+      "evidence": "O que mais influencia imunidade no dia a dia costuma ser: sono adequado, dieta rica em micronutrientes, atividade física moderada e manejo de estresse. Suplementação pode ser útil quando há baixa ingestão ou deficiência confirmada.",
+      "body_html": "<h2>1) Pilares que mais impactam</h2><ul><li><strong>Sono</strong>: a base da resposta imune.</li><li><strong>Alimentação</strong>: frutas, legumes, proteínas e fibras.</li><li><strong>Exercício moderado</strong>: regularidade &gt; intensidade.</li><li><strong>Estresse</strong>: técnicas simples de respiração e rotina.</li></ul><h2>2) Quando faz sentido suplementar</h2><p>Em especial quando há pouca exposição solar ou dieta limitada. Sempre que possível, confirme com exame e orientação.</p><h2>3) O que é comum na prática</h2><ul><li><strong>Vitamina D</strong>: sobretudo em baixa exposição solar.</li><li><strong>Zinco</strong>: ingestão insuficiente na dieta.</li><li><strong>Vitamina C</strong>: apoio geral via dieta (suplemento é situacional).</li></ul><h2>4) Rotina simples (10 minutos)</h2><ol><li>Sol da manhã (se possível)</li><li>Prato colorido (1 fruta + 1 legume)</li><li>Caminhada leve</li></ol>"
+    }
+  ]
+}
