@@ -48,7 +48,11 @@ jobs:
       - name: Build articles
         run: |
           if [ -f "content_pipeline/build_articles.py" ]; then python content_pipeline/build_articles.py; fi
-
+      - name: Publish articles.json to /artigos
+        run: |
+          if [ -f "content_pipeline/data/articles.json" ]; then
+              cp content_pipeline/data/articles.json artigos/articles.json
+              fi
       - name: Run SEO audit
         run: |
           if [ -f "seo_audit/audit_site.py" ]; then python seo_audit/audit_site.py; fi
