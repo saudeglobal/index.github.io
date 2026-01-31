@@ -3,6 +3,26 @@ from pathlib import Path
 from datetime import datetime, timezone
 import os
 
+EXCLUDE_FILES = {
+    "index2.html",      # rascunho
+    "404.html",
+}
+
+EXCLUDE_DIRS = {
+    ".git", ".github",
+    "content_pipeline",
+    "seo_audit",
+    "analytics_report",
+    "node_modules",
+    # se você tiver outras pastas de build/teste, coloque aqui
+}
+
+# (opcional) bloquear qualquer arquivo que contenha esses termos no nome
+EXCLUDE_NAME_CONTAINS = {
+    "test", "teste", "draft", "rascunho", "tmp", "backup", "old"
+}
+
+
 BASE_URL = os.environ.get("BASE_URL", "https://saudenaturalglobal.com.br").rstrip("/")
 ROOT = Path(__file__).resolve().parents[1]
 
