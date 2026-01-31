@@ -83,22 +83,20 @@ def lastmod_iso(path: Path) -> str:
 
 
 def to_loc(rel_path: str) -> str:
-    """
-    Converte caminho relativo em URL canônica.
-    - index.html (raiz) -> /
-    - qualquer /index.html em subpasta -> /subpasta/
-    - demais -> /arquivo.html
-    """
-    rel_path = rel_path.replace("\\", "/")
+    rel_path = rel_path.replace("\\", "/").lstrip("/")
 
+    # Home
     if rel_path == "index.html":
         return f"{BASE_URL}/"
 
+    # Qualquer /index.html em subpasta vira /subpasta/
     if rel_path.endswith("/index.html"):
-        rel_dir = rel_path[:-10]  # remove "/index.html"
+        rel_dir = rel_path[:-len("index.html")].rstrip("/")  # remove index.html e barra extra
         return f"{BASE_URL}/{rel_dir}/"
 
+    # Normal
     return f"{BASE_URL}/{rel_path}"
+
 
 
 def build_sitemap_xml() -> str:
