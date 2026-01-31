@@ -1,56 +1,53 @@
 # scripts/generate_sitemap.py
-from __future__ import annotations
-
 from pathlib import Path
 from datetime import datetime, timezone
 import os
 
+# Base do site
 BASE_URL = os.environ.get("BASE_URL", "https://saudenaturalglobal.com.br").rstrip("/")
-ROOT = Path(__file__).resolve().parents[1]  # raiz do repo
+ROOT = Path(__file__).resolve().parents[1]
 
-# Arquivos que NÃO devem entrar no sitemap
+# Excluir arquivos específicos
 EXCLUDE_FILES = {
-    "index2.html",      # rascunho
+    "index2.html",   # rascunho
     "404.html",
 }
 
-# Pastas que NÃO devem entrar no sitemap
+# Excluir diretórios técnicos/irrelevantes para indexação
 EXCLUDE_DIRS = {
-    ".git",
-    ".github",
+    ".git", ".github",
     "node_modules",
     "content_pipeline",
     "seo_audit",
     "analytics_report",
-    "scripts",          # <-- importante: não indexar scripts
+    "scripts",      # opcional: não listar nada dentro
+    "assets", "img", "jp", "en",  # ajuste se quiser indexar subpastas
 }
 
-# Se o nome do arquivo contiver algo disso, exclui
+# Excluir qualquer arquivo cujo nome contenha isso
 EXCLUDE_NAME_CONTAINS = {
     "test", "teste", "draft", "rascunho", "tmp", "backup", "old"
 }
 
+
 def should_exclude(path: Path) -> bool:
     rel = path.relative_to(ROOT)
 
-    # exclui se estiver em diretório bloqueado
+    # diretórios excluídos
     if any(part in EXCLUDE_DIRS for part in rel.parts):
         return True
 
-    # exclui arquivos específicos
+    # arquivos excluídos
     if path.name in EXCLUDE_FILES:
         return True
 
-    # exclui por termos no nome
-    lname = path.name.lower()
-    if any(term in lname for term in EXCLUDE_NAME_CONTAINS):
-        return True
-
-    # não colocar arquivos ocultos (ex: .something.html)
-    if any(part.startswith(".") for part in rel.parts):
+    # termos excluídos no nome
+    lower = path.name.lower()
+    if any(term in lower for term in EXCLUDE_NAME_CONTAINS):
         return True
 
     return False
+
 
 def iter_html_files(root: Path):
     for p in root.rglob("*.html"):
@@ -58,35 +55,44 @@ def iter_html_files(root: Path):
             continue
         yield p
 
-def url_for_file(path: Path) -> str:
-    rel = path.relative_to(ROOT).as_posix()  # ex: artigos/index.html
 
-    # Regra: qualquer ".../index.html" vira ".../"
+def url_for(path: Path) -> str:
+    rel = path.relative_to(ROOT).as_posix()
+
+    # Normaliza qualquer ".../index.html" para ".../"
     if rel.endswith("/index.html"):
-        rel_dir = rel[: -len("index.html")]  # mantém a barra final
-        return f"{BASE_URL}/{rel_dir}".replace("//", "/").replace(":/", "://")
+        base = rel[:-len("index.html")]  # mantém a barra final
+        # caso especial raiz
+        if base == "":
+            return f"{BASE_URL}/"
+        return f"{BASE_URL}/{base}".replace("//", "/").replace(":/", "://")
 
-    # Regra: "index.html" na raiz vira "/"
+    # index.html na raiz vira "/"
     if rel == "index.html":
         return f"{BASE_URL}/"
 
-    return f"{BASE_URL}/{rel}"
+    return f"{BASE_URL}/{rel}".replace("//", "/").replace(":/", "://")
+
 
 def lastmod_iso(path: Path) -> str:
     ts = path.stat().st_mtime
     dt = datetime.fromtimestamp(ts, tz=timezone.utc)
     return dt.strftime("%Y-%m-%d")
 
-def build_sitemap_xml() -> str:
-    urls = []
-    for f in sorted(iter_html_files(ROOT)):
-        loc = url_for_file(f)
-        urls.append((loc, lastmod_iso(f)))
 
-    lines = [
-        '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ]
+def build_sitemap() -> str:
+    # Usa dict para deduplicar URLs (caso apareçam equivalentes)
+    url_map = {}
+
+    for f in iter_html_files(ROOT):
+        loc = url_for(f)
+        url_map[loc] = lastmod_iso(f)
+
+    urls = sorted(url_map.items())
+
+    lines = []
+    lines.append('<?xml version="1.0" encoding="UTF-8"?>')
+    lines.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
     for loc, lastmod in urls:
         lines.append("  <url>")
         lines.append(f"    <loc>{loc}</loc>")
@@ -95,56 +101,45 @@ def build_sitemap_xml() -> str:
     lines.append("</urlset>")
     return "\n".join(lines) + "\n"
 
-def ensure_robots_txt():
-    robots_path = ROOT / "robots.txt"
+
+def ensure_robots():
+    robots = ROOT / "robots.txt"
     sitemap_line = f"Sitemap: {BASE_URL}/sitemap.xml"
 
-    # Conteúdo base
-    content = [
+    base_lines = [
         "User-agent: *",
         "Allow: /",
         "",
         "Disallow: /content_pipeline/",
         "Disallow: /seo_audit/",
         "Disallow: /analytics_report/",
-        "Disallow: /scripts/",        # <-- importante
-        "Disallow: /.github/",        # <-- opcional, mas bom
-        "",
-        sitemap_line,
-        "",
+        # opcional:
+        "Disallow: /scripts/",
     ]
 
-    # Se já existir robots, preserva as linhas que NÃO conflitam e força o Sitemap certo
-    if robots_path.exists():
-        old = robots_path.read_text(encoding="utf-8").splitlines()
-        # pega linhas "custom" antigas (sem duplicar as principais)
-        keep = []
-        for line in old:
-            l = line.strip().lower()
-            if l.startswith("sitemap:"):
-                continue
-            if l in {"user-agent: *", "allow: /"}:
-                continue
-            if l.startswith("disallow: /content_pipeline/"):
-                continue
-            if l.startswith("disallow: /seo_audit/"):
-                continue
-            if l.startswith("disallow: /analytics_report/"):
-                continue
-            if l.startswith("disallow: /scripts/"):
-                continue
-            if l.startswith("disallow: /.github/"):
-                continue
-            keep.append(line)
-        # reconstroi
-        content = content[:-2] + keep + ["", sitemap_line, ""]
+    if robots.exists():
+        content = robots.read_text(encoding="utf-8").splitlines()
+        # remove qualquer linha antiga de Sitemap:
+        content = [ln for ln in content if not ln.strip().lower().startswith("sitemap:")]
+        # se estiver vazio ou muito “estranho”, substitui pelo base
+        if len([ln for ln in content if ln.strip()]) < 2:
+            content = base_lines
+    else:
+        content = base_lines
 
-    robots_path.write_text("\n".join(content).strip() + "\n", encoding="utf-8")
+    # garante o sitemap no fim
+    if content and content[-1].strip() != "":
+        content.append("")
+    content.append(sitemap_line)
+
+    robots.write_text("\n".join(content).strip() + "\n", encoding="utf-8")
+
 
 def main():
-    (ROOT / "sitemap.xml").write_text(build_sitemap_xml(), encoding="utf-8")
-    ensure_robots_txt()
+    (ROOT / "sitemap.xml").write_text(build_sitemap(), encoding="utf-8")
+    ensure_robots()
     print("OK: sitemap.xml e robots.txt atualizados.")
+
 
 if __name__ == "__main__":
     main()
