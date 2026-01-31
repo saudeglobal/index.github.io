@@ -56,9 +56,14 @@ jobs:
       - name: Run SEO audit
         run: |
           if [ -f "seo_audit/audit_site.py" ]; then python seo_audit/audit_site.py; fi
-
-      - name: Commit changes (generated pages/reports)
+      - name: Generate sitemap.xml and robots.txt
+      env:
+          BASE_URL: https://saudenaturalglobal.com.br
         run: |
+          python scripts/generate_sitemap.py
+
+          - name: Commit changes (generated pages/reports)
+            run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add sitemap.xml robots.txt artigos/ seo_audit/ analytics_report/
@@ -68,8 +73,4 @@ jobs:
             git commit -m "Auto-build articles and SEO report"
             git push
           fi
-      - name: Generate sitemap.xml and robots.txt
-        env:
-            BASE_URL: https://saudenaturalglobal.com.br
-        run: |
-            python scripts/generate_sitemap.py
+      
