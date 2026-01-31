@@ -1,4 +1,10 @@
 name: Generate sitemap.xml
+permissions:
+  contents: write
+
+concurrency:
+  group: sitemap-main
+  cancel-in-progress: true
 
 on:
   workflow_dispatch:
@@ -38,18 +44,29 @@ jobs:
         run: |
           python scripts/generate_sitemap.py
 
-      - name: Commit & push if changed
+      -       - name: Commit & push if changed (robust)
         run: |
+          set -e
           if git status --porcelain | grep -E "sitemap\.xml|robots\.txt" >/dev/null 2>&1; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-            # rebase para evitar conflito se outro workflow comitou
-            git pull --rebase origin main || true
-
             git add sitemap.xml robots.txt
-            git commit -m "chore: update sitemap.xml and robots.txt"
-            git push
+            git commit -m "chore: update sitemap.xml and robots.txt" || true
+
+            # tenta rebase + push até 3 vezes (pra evitar corrida com outro workflow)
+            for i in 1 2 3; do
+              git pull --rebase origin main || true
+              if git push; then
+                echo "Pushed successfully."
+                exit 0
+              fi
+              echo "Push failed, retrying in 5s..."
+              sleep 5
+            done
+
+            echo "ERROR: Could not push after retries."
+            exit 1
           else
             echo "No sitemap/robots changes."
           fi
+
