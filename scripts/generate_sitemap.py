@@ -1,99 +1,82 @@
-#!/usr/bin/env python3
-import os
-import subprocess
+# scripts/generate_sitemap.py
+from pathlib import Path
 from datetime import datetime, timezone
-from urllib.parse import urljoin
+import os
 
-import xml.etree.ElementTree as ET
+BASE_URL = os.environ.get("BASE_URL", "https://saudenaturalglobal.com.br").rstrip("/")
+ROOT = Path(__file__).resolve().parents[1]
 
-# Pastas para IGNORAR (ajuste se quiser)
-EXCLUDE_DIRS = {
-    ".git", ".github",
-    "assets", "img",
-    "content_pipeline",
-    "seo_audit", "analytics_report",
-    "node_modules",
-}
-
-# Arquivos para IGNORAR
 EXCLUDE_FILES = {
-    "404.html",
+    "index2.html",
+}
+EXCLUDE_DIRS = {
+    ".git", ".github", "assets", "img", "jp", "en",
+    "content_pipeline", "seo_audit", "analytics_report",
 }
 
-def git_lastmod_iso(path: str) -> str:
-    """
-    Retorna a data do último commit do arquivo no formato ISO 8601 (ex: 2026-01-31T10:20:30+00:00).
-    Requer checkout com fetch-depth: 0 no Actions.
-    """
-    try:
-        out = subprocess.check_output(
-            ["git", "log", "-1", "--format=%cI", "--", path],
-            stderr=subprocess.DEVNULL,
-            text=True,
-        ).strip()
-        if out:
-            return out
-    except Exception:
-        pass
-    # fallback: agora (não ideal, mas evita quebrar)
-    return datetime.now(timezone.utc).isoformat()
+def iter_html_files(root: Path):
+    for p in root.rglob("*.html"):
+        rel = p.relative_to(root)
+        # pula diretórios excluídos
+        if any(part in EXCLUDE_DIRS for part in rel.parts):
+            continue
+        if p.name in EXCLUDE_FILES:
+            continue
+        yield p
 
-def iter_html_files(root: str):
-    for dirpath, dirnames, filenames in os.walk(root):
-        # remove dirs excluídas
-        dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS and not d.startswith(".")]
+def url_for(path: Path) -> str:
+    rel = path.relative_to(ROOT).as_posix()
+    if rel == "index.html":
+        return f"{BASE_URL}/"
+    return f"{BASE_URL}/{rel}"
 
-        for fn in filenames:
-            if not fn.endswith(".html"):
-                continue
-            if fn in EXCLUDE_FILES:
-                continue
+def lastmod_iso(path: Path) -> str:
+    ts = path.stat().st_mtime
+    dt = datetime.fromtimestamp(ts, tz=timezone.utc)
+    return dt.strftime("%Y-%m-%d")
 
-            full = os.path.join(dirpath, fn)
-            rel = os.path.relpath(full, root).replace("\\", "/")
+def build_sitemap():
+    urls = []
+    for f in sorted(iter_html_files(ROOT)):
+        urls.append((url_for(f), lastmod_iso(f)))
 
-            # Ignore arquivos que comecem com "_" (drafts) se quiser
-            if os.path.basename(rel).startswith("_"):
-                continue
+    lines = []
+    lines.append('<?xml version="1.0" encoding="UTF-8"?>')
+    lines.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    for loc, lastmod in urls:
+        lines.append("  <url>")
+        lines.append(f"    <loc>{loc}</loc>")
+        lines.append(f"    <lastmod>{lastmod}</lastmod>")
+        lines.append("  </url>")
+    lines.append("</urlset>")
+    return "\n".join(lines) + "\n"
 
-            yield rel
+def ensure_robots():
+    robots = ROOT / "robots.txt"
+    sitemap_line = f"Sitemap: {BASE_URL}/sitemap.xml"
+
+    if robots.exists():
+        content = robots.read_text(encoding="utf-8").splitlines()
+    else:
+        content = ["User-agent: *", "Allow: /"]
+
+    # garante que tenha a linha Sitemap
+    if not any(line.strip().lower().startswith("sitemap:") for line in content):
+        content.append(sitemap_line)
+    else:
+        # substitui por base_url atual
+        content = [
+            sitemap_line if line.strip().lower().startswith("sitemap:") else line
+            for line in content
+        ]
+
+    robots.write_text("\n".join(content).strip() + "\n", encoding="utf-8")
 
 def main():
-    base_url = os.environ.get("BASE_URL", "https://saudenaturalglobal.com.br").rstrip("/") + "/"
-    root = os.environ.get("SITE_ROOT", ".")
-    out_file = os.environ.get("SITEMAP_OUT", "sitemap.xml")
-
-    # Monta XML
-    urlset = ET.Element("urlset", attrib={"xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
-
-    # (Opcional) garantir home primeiro
-    home_url = base_url
-    home = ET.SubElement(urlset, "url")
-    ET.SubElement(home, "loc").text = home_url
-    ET.SubElement(home, "lastmod").text = datetime.now(timezone.utc).date().isoformat()
-
-    # Lista arquivos .html
-    pages = sorted(set(iter_html_files(root)))
-
-    for rel in pages:
-        # transforma "index.html" em "/" e ".../index.html" em ".../"
-        if rel == "index.html":
-            loc = base_url
-        elif rel.endswith("/index.html"):
-            loc = urljoin(base_url, rel[:-10] + "/")  # remove "index.html"
-        else:
-            loc = urljoin(base_url, rel)
-
-        url_el = ET.SubElement(urlset, "url")
-        ET.SubElement(url_el, "loc").text = loc
-        ET.SubElement(url_el, "lastmod").text = git_lastmod_iso(rel)
-
-    # escreve formatado
-    tree = ET.ElementTree(urlset)
-    ET.indent(tree, space="  ", level=0)
-    tree.write(out_file, encoding="utf-8", xml_declaration=True)
-
-    print(f"[OK] sitemap gerado: {out_file} ({len(pages)+1} urls)")
+    xml = build_sitemap()
+    (ROOT / "sitemap.xml").write_text(xml, encoding="utf-8")
+    ensure_robots()
+    print("OK: sitemap.xml e robots.txt atualizados.")
 
 if __name__ == "__main__":
     main()
