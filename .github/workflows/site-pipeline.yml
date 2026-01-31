@@ -68,3 +68,8 @@ jobs:
             git commit -m "Auto-build articles and SEO report"
             git push
           fi
+      - name: Generate sitemap.xml and robots.txt
+        env:
+            BASE_URL: https://saudenaturalglobal.com.br
+        run: |
+            python scripts/generate_sitemap.py
