@@ -4,6 +4,11 @@ Allow: /
 Disallow: /content_pipeline/
 Disallow: /seo_audit/
 Disallow: /analytics_report/
+Disallow: /scripts/
+Disallow: /.github/
+
+
+
+
 
 Sitemap: https://saudenaturalglobal.com.br/sitemap.xml
-
