@@ -1,102 +1,159 @@
+#!/usr/bin/env python3
 # scripts/generate_sitemap.py
+
 from pathlib import Path
 from datetime import datetime, timezone
 import os
 
+
+# =========================
+# Config
+# =========================
+BASE_URL = os.environ.get("BASE_URL", "https://saudenaturalglobal.com.br").rstrip("/")
+ROOT = Path(__file__).resolve().parents[1]
+SITEMAP_OUT = ROOT / "sitemap.xml"
+ROBOTS_OUT = ROOT / "robots.txt"
+
+# Arquivos que NÃO entram no sitemap
 EXCLUDE_FILES = {
-    "index2.html",      # rascunho
+    "index2.html",   # rascunho
     "404.html",
 }
 
+# Pastas que NÃO entram no sitemap (técnicas / internas)
 EXCLUDE_DIRS = {
-    ".git", ".github",
+    ".git",
+    ".github",
+    "node_modules",
     "content_pipeline",
     "seo_audit",
     "analytics_report",
-    "node_modules",
-    # se você tiver outras pastas de build/teste, coloque aqui
 }
 
-# (opcional) bloquear qualquer arquivo que contenha esses termos no nome
+# Se quiser excluir também imagens/assets do sitemap (não é necessário pois filtramos .html)
+# mas pode manter fora do crawl:
+ROBOTS_DISALLOW_DIRS = {
+    "/content_pipeline/",
+    "/seo_audit/",
+    "/analytics_report/",
+}
+
+# (Opcional) exclui qualquer arquivo que tenha estes termos no nome
 EXCLUDE_NAME_CONTAINS = {
     "test", "teste", "draft", "rascunho", "tmp", "backup", "old"
 }
 
 
-BASE_URL = os.environ.get("BASE_URL", "https://saudenaturalglobal.com.br").rstrip("/")
-ROOT = Path(__file__).resolve().parents[1]
+# =========================
+# Helpers
+# =========================
+def is_excluded(path: Path) -> bool:
+    """Decide se um arquivo deve ser ignorado."""
+    rel = path.relative_to(ROOT)
+    # pula dirs excluídos
+    if any(part in EXCLUDE_DIRS for part in rel.parts):
+        return True
 
-EXCLUDE_FILES = {
-    "index2.html",
-}
-EXCLUDE_DIRS = {
-    ".git", ".github", "assets", "img", "jp", "en",
-    "content_pipeline", "seo_audit", "analytics_report",
-}
+    name = path.name
+    if name in EXCLUDE_FILES:
+        return True
 
-def iter_html_files(root: Path):
-    for p in root.rglob("*.html"):
-        rel = p.relative_to(root)
-        # pula diretórios excluídos
-        if any(part in EXCLUDE_DIRS for part in rel.parts):
+    low = name.lower()
+    if any(token in low for token in EXCLUDE_NAME_CONTAINS):
+        return True
+
+    return False
+
+
+def iter_html_files() -> list[Path]:
+    """Lista arquivos .html que devem entrar no sitemap."""
+    files = []
+    for p in ROOT.rglob("*.html"):
+        if is_excluded(p):
             continue
-        if p.name in EXCLUDE_FILES:
-            continue
-        yield p
+        files.append(p)
+    return sorted(set(files))
 
-def url_for(path: Path) -> str:
-    rel = path.relative_to(ROOT).as_posix()
-    if rel == "index.html":
-        return f"{BASE_URL}/"
-    return f"{BASE_URL}/{rel}"
 
 def lastmod_iso(path: Path) -> str:
+    """Lastmod baseado no mtime do arquivo (UTC)."""
     ts = path.stat().st_mtime
     dt = datetime.fromtimestamp(ts, tz=timezone.utc)
     return dt.strftime("%Y-%m-%d")
 
-def build_sitemap():
-    urls = []
-    for f in sorted(iter_html_files(ROOT)):
-        urls.append((url_for(f), lastmod_iso(f)))
 
-    lines = []
+def to_loc(rel_path: str) -> str:
+    """
+    Converte caminho relativo em URL canônica.
+    - index.html (raiz) -> /
+    - qualquer /index.html em subpasta -> /subpasta/
+    - demais -> /arquivo.html
+    """
+    rel_path = rel_path.replace("\\", "/")
+
+    if rel_path == "index.html":
+        return f"{BASE_URL}/"
+
+    if rel_path.endswith("/index.html"):
+        rel_dir = rel_path[:-10]  # remove "/index.html"
+        return f"{BASE_URL}/{rel_dir}/"
+
+    return f"{BASE_URL}/{rel_path}"
+
+
+def build_sitemap_xml() -> str:
+    files = iter_html_files()
+
+    lines: list[str] = []
     lines.append('<?xml version="1.0" encoding="UTF-8"?>')
     lines.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
-    for loc, lastmod in urls:
+
+    for f in files:
+        rel = f.relative_to(ROOT).as_posix()
+        loc = to_loc(rel)
+        lastmod = lastmod_iso(f)
+
         lines.append("  <url>")
         lines.append(f"    <loc>{loc}</loc>")
         lines.append(f"    <lastmod>{lastmod}</lastmod>")
         lines.append("  </url>")
+
     lines.append("</urlset>")
     return "\n".join(lines) + "\n"
 
-def ensure_robots():
-    robots = ROOT / "robots.txt"
+
+def ensure_robots_txt():
+    """
+    Garante um robots.txt mínimo com:
+    - Allow /
+    - Disallow das pastas técnicas
+    - Sitemap apontando para /sitemap.xml
+    """
     sitemap_line = f"Sitemap: {BASE_URL}/sitemap.xml"
 
-    if robots.exists():
-        content = robots.read_text(encoding="utf-8").splitlines()
-    else:
-        content = ["User-agent: *", "Allow: /"]
+    # base padrão
+    lines = [
+        "User-agent: *",
+        "Allow: /",
+        "",
+    ]
 
-    # garante que tenha a linha Sitemap
-    if not any(line.strip().lower().startswith("sitemap:") for line in content):
-        content.append(sitemap_line)
-    else:
-        # substitui por base_url atual
-        content = [
-            sitemap_line if line.strip().lower().startswith("sitemap:") else line
-            for line in content
-        ]
+    # disallow pastas técnicas
+    for d in sorted(ROBOTS_DISALLOW_DIRS):
+        lines.append(f"Disallow: {d}")
+    lines.append("")
+    lines.append(sitemap_line)
+    lines.append("")
 
-    robots.write_text("\n".join(content).strip() + "\n", encoding="utf-8")
+    ROBOTS_OUT.write_text("\n".join(lines), encoding="utf-8")
+
 
 def main():
-    xml = build_sitemap()
-    (ROOT / "sitemap.xml").write_text(xml, encoding="utf-8")
-    ensure_robots()
-    print("OK: sitemap.xml e robots.txt atualizados.")
+    xml = build_sitemap_xml()
+    SITEMAP_OUT.write_text(xml, encoding="utf-8")
+    ensure_robots_txt()
+    print(f"OK: sitemap.xml gerado com {xml.count('<url>')} URLs e robots.txt atualizado.")
+
 
 if __name__ == "__main__":
     main()
