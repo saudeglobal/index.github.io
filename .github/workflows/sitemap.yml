@@ -1,24 +1,13 @@
 name: Generate sitemap.xml
-permissions:
-  contents: write
-
-concurrency:
-  group: sitemap-main
-  cancel-in-progress: true
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths-ignore:
-      - "sitemap.xml"
-      - "robots.txt"
+  schedule:
+    - cron: "15 3 * * *"  # todo dia 03:15 UTC (ajuste se quiser)
 
-# Permissão para o GITHUB_TOKEN conseguir commitar no repo
 permissions:
   contents: write
 
-# Evita corrida de commits (um run por vez)
 concurrency:
   group: sitemap-main
   cancel-in-progress: true
@@ -44,16 +33,19 @@ jobs:
         run: |
           python scripts/generate_sitemap.py
 
-      -       - name: Commit & push if changed (robust)
+      - name: Commit & push if changed (robust)
         run: |
           set -e
+
+          # só tenta commit/push se sitemap.xml ou robots.txt mudaram
           if git status --porcelain | grep -E "sitemap\.xml|robots\.txt" >/dev/null 2>&1; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
             git add sitemap.xml robots.txt
             git commit -m "chore: update sitemap.xml and robots.txt" || true
 
-            # tenta rebase + push até 3 vezes (pra evitar corrida com outro workflow)
+            # evita corrida com outros commits (rebase + retry)
             for i in 1 2 3; do
               git pull --rebase origin main || true
               if git push; then
@@ -69,4 +61,3 @@ jobs:
           else
             echo "No sitemap/robots changes."
           fi
-
