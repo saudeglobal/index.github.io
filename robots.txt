@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /content_pipeline/
+Disallow: /seo_audit/
+Disallow: /analytics_report/
+
+Sitemap: https://saudenaturalglobal.com.br/sitemap.xml
+
