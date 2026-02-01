@@ -748,8 +748,9 @@
   if (!grid) return;
 
   // 1) Carrega artigos
-  const res = await fetch('artigos/articles.json', { cache: 'no-store' });
-  const articles = await res.json();
+  const res = await fetch('/artigos/articles.json', { cache: 'no-store' });
+  if (!res.ok) throw new Error('Falha ao carregar /artigos/articles.json: ' + res.status);
+const articles = await res.json();
 
   // Se o seu script já fazia slice(0,3), mantenha:
   const top = articles.slice(0, 3);
