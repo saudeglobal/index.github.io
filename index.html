@@ -675,7 +675,7 @@
     </div>
 
     <!-- GRID ÚNICO (não quebra o layout) -->
-    <div class="mt-10 grid gap-6 md:grid-cols-2">
+    <div id="blogGrid" class="mt-10 grid gap-6 md:grid-cols-2"></div>
 
       <!-- Artigo 1 -->
       <a href="artigos/energia-mais-disposicao-rotina.html"
@@ -836,7 +836,78 @@
       </div>
     
     </footer>
+<!-- ================ Ajuste de cards para entrar novos artigos ====================== -->
+      <script>
+(async function renderBlog(){
+  const grid = document.getElementById("blogGrid");
+  if (!grid) return;
 
+  try {
+    const res = await fetch("artigos/articles.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("Falha ao carregar artigos/articles.json");
+    const data = await res.json();
+
+    // data pode ser {articles:[...]} ou [...]
+    const articles = Array.isArray(data) ? data : (data.articles || []);
+
+    // pega os 3 mais recentes por date_modified (fallback: ordem do arquivo)
+    const sorted = [...articles].sort((a,b) => (b.date_modified||"").localeCompare(a.date_modified||""));
+    const top = sorted.slice(0, 3);
+
+    const badgeClass = (pillar) => {
+      const p = (pillar||"").toLowerCase();
+      if (p.includes("imun")) return "bg-sky-600";
+      if (p.includes("energ")) return "bg-emerald-600";
+      if (p.includes("suplement")) return "bg-emerald-600";
+      return "bg-emerald-600";
+    };
+
+    const imgFor = (a) => {
+      // se no futuro você incluir image_url no JSON, usa aqui
+      // return a.image_url || ...
+      const p = (a.pillar||"").toLowerCase();
+      if (p.includes("imun")) return "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=1600&auto=format&fit=crop";
+      if (p.includes("energ")) return "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1600&auto=format&fit=crop";
+      return "https://images.unsplash.com/photo-1584467735871-b0b9d9b48f35?q=80&w=1600&auto=format&fit=crop";
+    };
+
+    grid.innerHTML = top.map(a => `
+      <a href="artigos/${a.slug}.html"
+         class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
+        <div class="relative">
+          <img loading="lazy"
+               src="${imgFor(a)}"
+               alt="Artigo: ${a.title || a.h1 || a.slug}"
+               class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+          <span class="absolute left-3 top-3 ${badgeClass(a.pillar)} text-white text-xs font-bold rounded-full px-2 py-1">
+            ${a.pillar || "Conteúdo"}
+          </span>
+        </div>
+        <div class="p-6">
+          <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
+            ${a.title || a.h1 || a.slug}
+          </h4>
+          <p class="mt-2 text-slate-600">
+            ${(a.description || a.intro || "").slice(0, 140)}${(a.description || a.intro || "").length > 140 ? "..." : ""}
+          </p>
+          <div class="mt-4 inline-flex items-center text-emerald-700 font-semibold">
+            Ler agora →
+          </div>
+        </div>
+      </a>
+    `).join("");
+
+  } catch (e) {
+    // fallback: não quebra a home
+    grid.innerHTML = `
+      <div class="text-slate-600">
+        Não foi possível carregar os artigos agora.
+      </div>
+    `;
+  }
+})();
+</script>
+<!-- =========== Final do ajuste de cards para novos artigos =============== -->
     <!-- ====== JS específico das ofertas (no final do body) ====== -->
     <script>
       const OFFERS_FALLBACK = "https://nutriprofits.com/account/offers";
