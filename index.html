@@ -674,108 +674,9 @@
     </div>
 
     <!-- GRID CERTO (cards ficam DENTRO dele) -->
-    <div class="mt-10 grid gap-6 md:grid-cols-2">
+    <div id="blogGrid" class="mt-10 grid gap-6 md:grid-cols-2"></div>
 
-      <!-- Artigo 1 -->
-      <a href="artigos/energia-mais-disposicao-rotina.html"
-         class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
-        <div class="relative">
-          <img loading="lazy"
-               src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1600&auto=format&fit=crop"
-               alt="Artigo: Energia — mais disposição com uma rotina simples"
-               class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-          <span class="absolute left-3 top-3 bg-emerald-600 text-white text-xs font-bold rounded-full px-2 py-1">
-            Energia
-          </span>
-        </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
-            Energia: mais disposição com uma rotina simples
-          </h4>
-          <p class="mt-2 text-slate-600">
-            Um roteiro prático com sono, luz, hidratação, alimentação e movimento — sem “milagres”.
-          </p>
-          <div class="mt-4 inline-flex items-center text-emerald-700 font-semibold">
-            Ler agora →
-          </div>
-        </div>
-      </a>
-
-      <!-- Artigo 2 -->
-      <a href="artigos/imunidade-rotina-vitamina-d-zinco.html"
-         class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
-        <div class="relative">
-          <img loading="lazy"
-               src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=1600&auto=format&fit=crop"
-               alt="Artigo: Imunidade — rotina simples e quando pensar em suplementos"
-               class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-          <span class="absolute left-3 top-3 bg-sky-600 text-white text-xs font-bold rounded-full px-2 py-1">
-            Imunidade
-          </span>
-        </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
-            Imunidade: rotina simples que faz diferença (e quando pensar em suplementos)
-          </h4>
-          <p class="mt-2 text-slate-600">
-            O que realmente move a imunidade no dia a dia e como avaliar vitamina D e zinco com segurança.
-          </p>
-          <div class="mt-4 inline-flex items-center text-emerald-700 font-semibold">
-            Ler agora →
-          </div>
-        </div>
-      </a>
-
-      <!-- Artigo 3 (Magnésio) -->
-      <a href="artigos/magnesio-beneficios-como-tomar.html"
-         class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
-        <div class="relative">
-          <img loading="lazy"
-               src="https://images.unsplash.com/photo-1627467959547-8ed5841088f2?q=80&w=1600&auto=format&fit=crop"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1600&auto=format&fit=crop';"
-               alt="Artigo: Magnésio — benefícios, como tomar e quem deve ter atenção"
-               class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-          <span class="absolute left-3 top-3 bg-emerald-600 text-white text-xs font-bold rounded-full px-2 py-1">
-            Suplementos
-          </span>
-        </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
-            Magnésio: benefícios, como tomar e quem deve ter atenção
-          </h4>
-          <p class="mt-2 text-slate-600">
-            Entenda os tipos de magnésio, para que servem, doses comuns e cuidados.
-          </p>
-          <div class="mt-4 inline-flex items-center text-emerald-700 font-semibold">
-            Ler agora →
-          </div>
-        </div>
-      </a>
-
-            <!-- Card antigo 2 (Guia) -->
-      <a href="https://saudenaturalglobal.com.br/guia.html"
-         target="_blank" rel="noopener noreferrer"
-         class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
-        <div class="relative">
-          <img loading="lazy"
-               src="https://saudenaturalglobal.com.br/img/planta2.png"
-               alt="Guia Completo de Suplementos Naturais"
-               class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-        </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
-            Guia Completo de Suplementos Naturais
-          </h4>
-          <p class="mt-2 text-slate-600">
-            Entenda os benefícios, doses seguras e como escolher os melhores produtos.
-          </p>
-        </div>
-      </a>
-
-    </div>  <!-- fecha #blogGrid -->
-  </div>    <!-- fecha container -->
-</section>
-<!-- ====== Fim: Conteúdo para você ====== -->
+   <!-- ====== Fim: Conteúdo para você ====== -->
 
 
 
@@ -841,75 +742,98 @@
     </footer>
 <!-- ================ Ajuste de cards para entrar novos artigos ====================== -->
       <script>
-(async function renderBlog(){
-  const grid = document.getElementById("blogGrid");
+(async function () {
+  const grid = document.getElementById('blogGrid');
   if (!grid) return;
 
-  try {
-    const res = await fetch("artigos/articles.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("Falha ao carregar artigos/articles.json");
-    const data = await res.json();
+  // 1) Carrega artigos
+  const res = await fetch('artigos/articles.json', { cache: 'no-store' });
+  const articles = await res.json();
 
-    // data pode ser {articles:[...]} ou [...]
-    const articles = Array.isArray(data) ? data : (data.articles || []);
+  // Se o seu script já fazia slice(0,3), mantenha:
+  const top = articles.slice(0, 3);
 
-    // pega os 3 mais recentes por date_modified (fallback: ordem do arquivo)
-    const sorted = [...articles].sort((a,b) => (b.date_modified||"").localeCompare(a.date_modified||""));
-    const top = sorted.slice(0, 3);
-
-    const badgeClass = (pillar) => {
-      const p = (pillar||"").toLowerCase();
-      if (p.includes("imun")) return "bg-sky-600";
-      if (p.includes("energ")) return "bg-emerald-600";
-      if (p.includes("suplement")) return "bg-emerald-600";
-      return "bg-emerald-600";
-    };
-
-    const imgFor = (a) => {
-      // se no futuro você incluir image_url no JSON, usa aqui
-      // return a.image_url || ...
-      const p = (a.pillar||"").toLowerCase();
-      if (p.includes("imun")) return "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=1600&auto=format&fit=crop";
-      if (p.includes("energ")) return "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1600&auto=format&fit=crop";
-      return "https://images.unsplash.com/photo-1584467735871-b0b9d9b48f35?q=80&w=1600&auto=format&fit=crop";
-    };
-
-    grid.innerHTML = top.map(a => `
-      <a href="artigos/${a.slug}.html"
-         class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
-        <div class="relative">
-          <img loading="lazy"
-               src="${imgFor(a)}"
-               alt="Artigo: ${a.title || a.h1 || a.slug}"
-               class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-          <span class="absolute left-3 top-3 ${badgeClass(a.pillar)} text-white text-xs font-bold rounded-full px-2 py-1">
-            ${a.pillar || "Conteúdo"}
-          </span>
-        </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
-            ${a.title || a.h1 || a.slug}
-          </h4>
-          <p class="mt-2 text-slate-600">
-            ${(a.description || a.intro || "").slice(0, 140)}${(a.description || a.intro || "").length > 140 ? "..." : ""}
-          </p>
-          <div class="mt-4 inline-flex items-center text-emerald-700 font-semibold">
-            Ler agora →
-          </div>
-        </div>
-      </a>
-    `).join("");
-
-  } catch (e) {
-    // fallback: não quebra a home
-    grid.innerHTML = `
-      <div class="text-slate-600">
-        Não foi possível carregar os artigos agora.
+  // Função para card padrão (artigos)
+  const cardArticle = (a) => `
+    <a href="artigos/${a.slug}.html"
+       class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
+      <div class="relative">
+        <img loading="lazy"
+             src="${a.image || 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1600&auto=format&fit=crop'}"
+             alt="${a.title}"
+             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1600&auto=format&fit=crop';">
+        <span class="absolute left-3 top-3 bg-emerald-600 text-white text-xs font-bold rounded-full px-2 py-1">
+          ${a.pillar || 'Conteúdo'}
+        </span>
       </div>
-    `;
-  }
+      <div class="p-6">
+        <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
+          ${a.title}
+        </h4>
+        <p class="mt-2 text-slate-600">
+          ${(a.description || '').slice(0, 120)}
+        </p>
+        <div class="mt-4 inline-flex items-center text-emerald-700 font-semibold">
+          Ler agora →
+        </div>
+      </div>
+    </a>
+  `;
+
+  // 2) Renderiza os 3 artigos
+  grid.innerHTML = top.map(cardArticle).join('');
+
+  // 3) Apende os 2 cards fixos (antigos)
+  const fixedCards = `
+    <a href="https://amzn.to/3IU7swe" target="_blank" rel="noopener noreferrer"
+       class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
+      <div class="relative">
+        <img loading="lazy"
+             src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1600&auto=format&fit=crop"
+             alt="Top 10 Livros de Saúde Natural da Amazon em 2025"
+             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+        <span class="absolute left-3 top-3 bg-slate-900 text-white text-xs font-bold rounded-full px-2 py-1">
+          Livros
+        </span>
+      </div>
+      <div class="p-6">
+        <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
+          Top 10 Livros de Saúde Natural da Amazon em 2025
+        </h4>
+        <p class="mt-2 text-slate-600">
+          Nossa curadoria com os títulos mais bem avaliados para transformar sua rotina.
+        </p>
+      </div>
+    </a>
+
+    <a href="guia.html"
+       class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
+      <div class="relative">
+        <img loading="lazy"
+             src="img/planta2.png"
+             alt="Guia Completo de Suplementos Naturais"
+             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?q=80&w=1600&auto=format&fit=crop';">
+        <span class="absolute left-3 top-3 bg-emerald-700 text-white text-xs font-bold rounded-full px-2 py-1">
+          Guia
+        </span>
+      </div>
+      <div class="p-6">
+        <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
+          Guia Completo de Suplementos Naturais
+        </h4>
+        <p class="mt-2 text-slate-600">
+          Entenda os benefícios, doses seguras e como escolher os melhores produtos.
+        </p>
+      </div>
+    </a>
+  `;
+
+  grid.insertAdjacentHTML('beforeend', fixedCards);
 })();
 </script>
+
 <!-- =========== Final do ajuste de cards para novos artigos =============== -->
     <!-- ====== JS específico das ofertas (no final do body) ====== -->
     <script>
