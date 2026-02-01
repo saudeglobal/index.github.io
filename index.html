@@ -738,128 +738,94 @@
       </div>
     
     </footer>
-<!-- ================ Ajuste de cards para entrar novos artigos ====================== -->
+  <!-- ================ Ajuste de cards para entrar novos artigos ====================== -->
 <script>
 (async function () {
   const grid = document.getElementById('blogGrid');
   if (!grid) return;
 
-  try {
-    // 1) Carrega artigos
-    const res = await fetch('artigos/articles.json', { cache: 'no-store' });
-    if (!res.ok) {
-      console.error('Erro ao carregar articles.json', res.status);
-      return;
-    }
+  const res = await fetch('artigos/articles.json', { cache: 'no-store' });
+  const data = await res.json();
+  const articles = data.articles || data; // funciona se tiver wrapper "articles" ou não
 
-    const data = await res.json();
+  const top = articles.slice(0, 3);
 
-    // Aceita dois formatos: [ ... ] ou { articles: [ ... ] }
-    const list = Array.isArray(data)
-      ? data
-      : (Array.isArray(data.articles) ? data.articles : []);
-
-    if (!list.length) {
-      console.warn('Nenhum artigo encontrado em articles.json');
-      return;
-    }
-
-    const top = list.slice(0, 3);
-
-    // ===== Mapa de imagens por artigo =====
-    const IMAGE_MAP = {
-      "energia-mais-disposicao-rotina":
-        "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1600&auto=format&fit=crop",
-      "imunidade-rotina-vitamina-d-zinco":
-        "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=1600&auto=format&fit=crop",
-      "magnesio-beneficios-como-tomar":
-        "https://images.unsplash.com/photo-1615485925600-97237c1b2d05?q=80&w=1600&auto=format&fit=crop"
-    };
-
-    const getImage = (a) =>
-      IMAGE_MAP[a.slug] ||
-      a.image ||
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1600&auto=format&fit=crop";
-
-    // ===== Card de artigo =====
-    const cardArticle = (a) => `
-      <a href="artigos/${a.slug}.html"
-         class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
-        <div class="relative">
-          <img loading="lazy"
-               src="${getImage(a)}"
-               alt="${a.title}"
-               class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1600&auto=format&fit=crop';">
-          <span class="absolute left-3 top-3 bg-emerald-600 text-white text-xs font-bold rounded-full px-2 py-1">
-            ${a.pillar || 'Conteúdo'}
-          </span>
+  const cardArticle = (a) => `
+    <a href="artigos/${a.slug}.html"
+       class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
+      <div class="relative">
+        <img loading="lazy"
+             src="${a.image}"
+             alt="${a.title}"
+             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+        <span class="absolute left-3 top-3 bg-emerald-600 text-white text-xs font-bold rounded-full px-2 py-1">
+          ${a.pillar || 'Conteúdo'}
+        </span>
+      </div>
+      <div class="p-6">
+        <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
+          ${a.title}
+        </h4>
+        <p class="mt-2 text-slate-600">
+          ${(a.description || '').slice(0, 120)}
+        </p>
+        <div class="mt-4 inline-flex items-center text-emerald-700 font-semibold">
+          Ler agora →
         </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
-            ${a.title}
-          </h4>
-          <p class="mt-2 text-slate-600">
-            ${(a.description || '').slice(0, 120)}
-          </p>
-          <div class="mt-4 inline-flex items-center text-emerald-700 font-semibold">
-            Ler agora →
-          </div>
-        </div>
-      </a>
-    `;
+      </div>
+    </a>
+  `;
 
-    // 3 artigos + 2 cards fixos
-    grid.innerHTML = top.map(cardArticle).join('') + `
-      <a href="https://amzn.to/3IU7swe" target="_blank" rel="noopener noreferrer"
-         class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
-        <div class="relative">
-          <img loading="lazy"
-               src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1600&auto=format&fit=crop"
-               alt="Top 10 Livros de Saúde Natural da Amazon em 2025"
-               class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-          <span class="absolute left-3 top-3 bg-slate-900 text-white text-xs font-bold rounded-full px-2 py-1">
-            Livros
-          </span>
-        </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
-            Top 10 Livros de Saúde Natural da Amazon em 2025
-          </h4>
-          <p class="mt-2 text-slate-600">
-            Nossa curadoria com os títulos mais bem avaliados para transformar sua rotina.
-          </p>
-        </div>
-      </a>
+  grid.innerHTML = top.map(cardArticle).join('') + `
+    <!-- Card fixo: Top 10 Livros -->
+    <a href="https://amzn.to/3IU7swe" target="_blank" rel="noopener noreferrer"
+       class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
+      <div class="relative">
+        <img loading="lazy"
+             src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1600&auto=format&fit=crop"
+             alt="Top 10 Livros de Saúde Natural da Amazon em 2025"
+             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+        <span class="absolute left-3 top-3 bg-slate-900 text-white text-xs font-bold rounded-full px-2 py-1">
+          Livros
+        </span>
+      </div>
+      <div class="p-6">
+        <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
+          Top 10 Livros de Saúde Natural da Amazon em 2025
+        </h4>
+        <p class="mt-2 text-slate-600">
+          Nossa curadoria com os títulos mais bem avaliados para transformar sua rotina.
+        </p>
+      </div>
+    </a>
 
-      <a href="guia.html"
-         class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
-        <div class="relative">
-          <img loading="lazy"
-               src="img/planta2.png"
-               alt="Guia Completo de Suplementos Naturais"
-               class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?q=80&w=1600&auto=format&fit=crop';">
-          <span class="absolute left-3 top-3 bg-emerald-700 text-white text-xs font-bold rounded-full px-2 py-1">
-            Guia
-          </span>
-        </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
-            Guia Completo de Suplementos Naturais
-          </h4>
-          <p class="mt-2 text-slate-600">
-            Entenda os benefícios, doses seguras e como escolher os melhores produtos.
-          </p>
-        </div>
-      </a>
-    `;
-  } catch (err) {
-    console.error('Erro no ajuste de cards do blog:', err);
-  }
+    <!-- Card fixo: Guia -->
+    <a href="guia.html"
+       class="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
+      <div class="relative">
+        <img loading="lazy"
+             src="img/planta2.png"
+             alt="Guia Completo de Suplementos Naturais"
+             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?q=80&w=1600&auto=format&fit=crop';">
+        <span class="absolute left-3 top-3 bg-emerald-700 text-white text-xs font-bold rounded-full px-2 py-1">
+          Guia
+        </span>
+      </div>
+      <div class="p-6">
+        <h4 class="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-emerald-700">
+          Guia Completo de Suplementos Naturais
+        </h4>
+        <p class="mt-2 text-slate-600">
+          Entenda os benefícios, doses seguras e como escolher os melhores produtos.
+        </p>
+      </div>
+    </a>
+  `;
 })();
 </script>
 <!-- =========== Final do ajuste de cards para novos artigos =============== -->
+
 
 
     <!-- ====== JS específico das ofertas (no final do body) ====== -->
