@@ -3,10 +3,14 @@ name: Site Pipeline (build articles + audit)
 on:
   workflow_dispatch:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
 
 permissions:
   contents: write
+
+concurrency:
+  group: site-pipeline-main
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -31,6 +35,7 @@ jobs:
           mkdir -p assets/img
           mkdir -p assets/css
           mkdir -p assets/js
+          mkdir -p scripts
 
           touch content_pipeline/data/.gitkeep
           touch content_pipeline/templates/.gitkeep
@@ -48,29 +53,38 @@ jobs:
       - name: Build articles
         run: |
           if [ -f "content_pipeline/build_articles.py" ]; then python content_pipeline/build_articles.py; fi
+
       - name: Publish articles.json to /artigos
         run: |
           if [ -f "content_pipeline/data/articles.json" ]; then
-              cp content_pipeline/data/articles.json artigos/articles.json
-              fi
+            cp content_pipeline/data/articles.json artigos/articles.json
+          fi
+
       - name: Run SEO audit
         run: |
           if [ -f "seo_audit/audit_site.py" ]; then python seo_audit/audit_site.py; fi
+
       - name: Generate sitemap.xml and robots.txt
-      env:
+        env:
           BASE_URL: https://saudenaturalglobal.com.br
         run: |
-          python scripts/generate_sitemap.py
+          if [ -f "scripts/generate_sitemap.py" ]; then
+            python scripts/generate_sitemap.py
+          else
+            echo "scripts/generate_sitemap.py not found"
+            exit 1
+          fi
 
-          - name: Commit changes (generated pages/reports)
-            run: |
+      - name: Commit changes (generated files)
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add sitemap.xml robots.txt artigos/ seo_audit/ analytics_report/
+
+          git add sitemap.xml robots.txt artigos/ seo_audit/ analytics_report/ || true
+
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Auto-build articles and SEO report"
+            git commit -m "Auto-build articles, sitemap, robots, and reports"
             git push
           fi
-      
