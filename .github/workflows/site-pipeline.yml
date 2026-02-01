@@ -4,24 +4,13 @@ on:
   workflow_dispatch:
   push:
     branches: ["main"]
-    # evita loop infinito: quando o próprio bot commitar sitemap/robots/reports
-    paths-ignore:
-      - "sitemap.xml"
-      - "robots.txt"
-      - "analytics_report/**"
-      - "seo_audit/**"
-      - "artigos/articles.json"
 
 permissions:
   contents: write
 
-concurrency:
-  group: site-pipeline-main
-  cancel-in-progress: true
-
 jobs:
   build:
-    # quando o commit é do bot, não roda de novo no push (evita loop)
+    # evita loop infinito quando o próprio bot fizer commit/push
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
 
@@ -36,16 +25,8 @@ jobs:
 
       - name: Ensure folders exist (with .gitkeep)
         run: |
-          mkdir -p content_pipeline/data
-          mkdir -p content_pipeline/templates
-          mkdir -p seo_audit
-          mkdir -p analytics_report
-          mkdir -p artigos
-          mkdir -p assets/img
-          mkdir -p assets/css
-          mkdir -p assets/js
-          mkdir -p scripts
-
+          mkdir -p content_pipeline/data content_pipeline/templates seo_audit analytics_report artigos
+          mkdir -p assets/img assets/css assets/js scripts
           touch content_pipeline/data/.gitkeep
           touch content_pipeline/templates/.gitkeep
           touch seo_audit/.gitkeep
@@ -58,7 +39,6 @@ jobs:
 
       - name: Install requirements (optional)
         run: |
-          python -m pip install --upgrade pip
           if [ -f "seo_audit/requirements.txt" ]; then pip install -r seo_audit/requirements.txt; fi
 
       - name: Build articles
@@ -79,25 +59,24 @@ jobs:
         env:
           BASE_URL: https://saudenaturalglobal.com.br
         run: |
-          if [ ! -f "scripts/generate_sitemap.py" ]; then
-            echo "Missing scripts/generate_sitemap.py"
+          if [ -f "scripts/generate_sitemap.py" ]; then
+            python scripts/generate_sitemap.py
+          else
+            echo "ERRO: scripts/generate_sitemap.py não existe."
             exit 1
           fi
-          python scripts/generate_sitemap.py
 
       - name: Commit changes (generated pages/reports)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # adiciona arquivos que você quer versionar
-          git add sitemap.xml robots.txt artigos/ seo_audit/ analytics_report/ || true
+          # adiciona tudo que foi gerado/atualizado
+          git add -A
 
-          # se não mudou nada, não commita
-          if [ -z "$(git status --porcelain)" ]; then
+          if git diff --cached --quiet; then
             echo "No changes to commit."
-            exit 0
+          else
+            git commit -m "Auto-build articles and SEO report"
+            git push
           fi
-
-          git commit -m "Auto-build site assets"
-          git push
