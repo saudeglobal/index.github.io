@@ -12,7 +12,7 @@
       "cta_url": "https://www.amazon.com.br/s?k=complexo+b+coenzima+q10+magnesio&tag=saudenaturalglobal.com.br-20",
       "image": "https://saudenaturalglobal.com.br/img/artigo-energia.jpg",
       "evidence": "Em geral, energia percebida melhora quando você alinha sono regular, exposição à luz pela manhã, alimentação com proteína e fibras, e movimento diário. Suplementos podem ajudar em casos específicos (por exemplo, deficiência documentada), mas não substituem hábitos.",
-      "body_html": "<h2>1) Comece pelo básico (o que mais dá retorno)</h2>..."
+      "body_html": "<h2>1) Comece pelo básico (o que mais dá retorno)</h2><ul><li><strong>Sono</strong>: horário consistente e redução de luz forte à noite.</li><li><strong>Luz de manhã</strong>: 10–20 min de luz natural logo cedo.</li><li><strong>Movimento</strong>: caminhada leve diária ou treino 3x/semana.</li><li><strong>Alimentação</strong>: proteína no café da manhã e fibras no almoço/jantar.</li></ul><h2>2) Sinais de que vale investigar</h2><ul><li>Cansaço persistente por semanas</li><li>Sonolência após refeições</li><li>Queda de rendimento e irritabilidade</li></ul><h2>3) Quando pensar em suplementos</h2><p>Priorize testes e orientação. Itens comuns na prática: <em>magnésio</em>, <em>complexo B</em>, <em>vitamina D</em> (se baixa) e <em>ômega-3</em>.</p><h2>4) Mini checklist (7 dias)</h2><ol><li>Deitar e acordar +/- no mesmo horário</li><li>Luz da manhã</li><li>30 min de caminhada</li><li>Água + proteína cedo</li></ol>"
     },
     {
       "slug": "imunidade-rotina-vitamina-d-zinco",
@@ -26,7 +26,7 @@
       "cta_url": "https://www.amazon.com.br/s?k=vitamina+d+zinco+vitamina+c&tag=saudenaturalglobal.com.br-20",
       "image": "https://saudenaturalglobal.com.br/img/artigo-imunidade.jpg",
       "evidence": "O que mais influencia imunidade no dia a dia costuma ser: sono adequado, dieta rica em micronutrientes, atividade física moderada e manejo de estresse. Suplementação pode ser útil quando há baixa ingestão ou deficiência confirmada.",
-      "body_html": "<h2>1) Pilares que mais impactam</h2>..."
+      "body_html": "<h2>1) Pilares que mais impactam</h2><ul><li><strong>Sono</strong>: a base da resposta imune.</li><li><strong>Alimentação</strong>: frutas, legumes, proteínas e fibras.</li><li><strong>Exercício moderado</strong>: regularidade &gt; intensidade.</li><li><strong>Estresse</strong>: técnicas simples de respiração e rotina.</li></ul><h2>2) Quando faz sentido suplementar</h2><p>Em especial quando há pouca exposição solar ou dieta limitada. Sempre que possível, confirme com exame e orientação.</p><h2>3) O que é comum na prática</h2><ul><li><strong>Vitamina D</strong>: sobretudo em baixa exposição solar.</li><li><strong>Zinco</strong>: ingestão insuficiente na dieta.</li><li><strong>Vitamina C</strong>: apoio geral via dieta (suplemento é situacional).</li></ul><h2>4) Rotina simples (10 minutos)</h2><ol><li>Sol da manhã (se possível)</li><li>Prato colorido (1 fruta + 1 legume)</li><li>Caminhada leve</li></ol>"
     },
     {
       "slug": "magnesio-beneficios-como-tomar",
@@ -39,8 +39,8 @@
       "date_modified": "2026-02-01",
       "cta_url": "https://www.amazon.com.br/s?k=magnesio+citrato+glicinato+treonato&tag=saudenaturalglobal.com.br-20",
       "image": "https://saudenaturalglobal.com.br/img/artigo-magnesio.jpg",
-      "evidence": "Magnésio é essencial para função neuromuscular e metabolismo energético...",
-      "body_html": "<h2>1) Para que serve o magnésio (na prática)</h2>..."
+      "evidence": "Magnésio é essencial para função neuromuscular e metabolismo energético. Suplementação pode ser útil quando ingestão está baixa ou há indicação clínica; em doença renal, o risco de excesso aumenta e exige orientação.",
+      "body_html": "<h2>1) Para que serve o magnésio (na prática)</h2><ul><li><strong>Função muscular e cãibras</strong>: participa da contração/relaxamento.</li><li><strong>Sistema nervoso</strong>: ajuda na excitabilidade neuronal e relaxamento.</li><li><strong>Energia</strong>: atua em reações do ATP (energia celular).</li></ul><h2>2) Tipos mais comuns (e como escolher)</h2><ul><li><strong>Citrato</strong>: boa absorção; pode soltar o intestino em alguns.</li><li><strong>Glicinato</strong>: costuma ser bem tolerado; foco em relaxamento/sono.</li><li><strong>Treonato</strong>: mais caro; marketing forte para cognição (evidência ainda limitada).</li><li><strong>Óxido</strong>: barato, mas geralmente pior absorção.</li></ul><h2>3) Como tomar (sem complicar)</h2><ul><li>Comece com dose baixa e aumente se tolerar.</li><li>Para sono/relaxamento: muitas pessoas preferem à noite.</li><li>Se der desconforto intestinal, divida a dose.</li></ul><h2>4) Quem deve ter atenção</h2><ul><li><strong>Doença renal</strong>: risco maior de excesso (converse com profissional).</li><li>Uso de múltiplos suplementos/medicamentos: evite somar magnésio sem necessidade.</li></ul><h2>5) Mini checklist</h2><ol><li>Priorize alimentos ricos em magnésio (verduras, leguminosas, castanhas).</li><li>Se suplementar, escolha um tipo que você tolere bem.</li><li>Observe intestino/sono/cãibras por 7–14 dias.</li></ol>"
     }
   ]
 }
