@@ -3,7 +3,14 @@ name: Site Pipeline (build articles + audit)
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+    # evita loop infinito: quando o próprio bot commitar sitemap/robots/reports
+    paths-ignore:
+      - "sitemap.xml"
+      - "robots.txt"
+      - "analytics_report/**"
+      - "seo_audit/**"
+      - "artigos/articles.json"
 
 permissions:
   contents: write
@@ -14,6 +21,8 @@ concurrency:
 
 jobs:
   build:
+    # quando o commit é do bot, não roda de novo no push (evita loop)
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
 
     steps:
@@ -45,9 +54,11 @@ jobs:
           touch assets/img/.gitkeep
           touch assets/css/.gitkeep
           touch assets/js/.gitkeep
+          touch scripts/.gitkeep
 
       - name: Install requirements (optional)
         run: |
+          python -m pip install --upgrade pip
           if [ -f "seo_audit/requirements.txt" ]; then pip install -r seo_audit/requirements.txt; fi
 
       - name: Build articles
@@ -68,23 +79,25 @@ jobs:
         env:
           BASE_URL: https://saudenaturalglobal.com.br
         run: |
-          if [ -f "scripts/generate_sitemap.py" ]; then
-            python scripts/generate_sitemap.py
-          else
-            echo "scripts/generate_sitemap.py not found"
+          if [ ! -f "scripts/generate_sitemap.py" ]; then
+            echo "Missing scripts/generate_sitemap.py"
             exit 1
           fi
+          python scripts/generate_sitemap.py
 
-      - name: Commit changes (generated files)
+      - name: Commit changes (generated pages/reports)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          # adiciona arquivos que você quer versionar
           git add sitemap.xml robots.txt artigos/ seo_audit/ analytics_report/ || true
 
-          if git diff --cached --quiet; then
+          # se não mudou nada, não commita
+          if [ -z "$(git status --porcelain)" ]; then
             echo "No changes to commit."
-          else
-            git commit -m "Auto-build articles, sitemap, robots, and reports"
-            git push
+            exit 0
           fi
+
+          git commit -m "Auto-build site assets"
+          git push
