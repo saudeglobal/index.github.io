@@ -838,6 +838,95 @@
       </div>
     </section>
     <!-- ====== Fim: Conteúdo para você ====== -->
+<!-- ============================================================= AQUI SEPARA DOIS CONTEUDOS DIFERENTES  ===================================================================================== -->
+
+<!-- Footer -->
+<footer class="bg-slate-900 text-slate-200">
+  <div class="container mx-auto px-4 py-14 grid md:grid-cols-3 gap-10">
+    <div>
+      <div class="flex items-center gap-3">
+        <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-emerald-200">
+          <img class="h-6 w-6" alt="Logotipo Saúde Natural Global"
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/85cbe96dd_logo.png">
+        </span>
+        <div class="leading-tight">
+          <div class="text-lg font-semibold tracking-tight">Saúde Natural</div>
+        </div>
+      </div>
+      <p class="mt-4 text-sm opacity-90">
+        Conteúdo educativo + curadoria de produtos e livros. Transparência em primeiro lugar.
+      </p>
+    </div>
+
+    <div>
+      <h5 class="font-semibold text-white">Compromisso</h5>
+      <p class="mt-3 text-sm opacity-90">
+        Conteúdo prático, com foco em hábitos e escolhas seguras. Para dúvidas médicas, procure orientação profissional.
+      </p>
+    </div>
+
+    <div>
+      <h5 class="font-semibold text-white">Transparência</h5>
+      <p class="mt-3 text-sm opacity-90">
+        Aviso legal de afiliado: Participamos do Programa de Associados da Amazon. Como participantes, podemos receber
+        comissão por compras qualificadas realizadas por meio de links em nosso site. Isso não altera o preço para você.
+        Também utilizamos outras redes de afiliados quando aplicável.
+      </p>
+      <div class="mt-3 flex items-center gap-3 text-xs text-slate-400">
+        <i data-lucide="lock" class="h-4 w-4"></i> SSL Ativo
+        <i data-lucide="shield" class="h-4 w-4 ml-3"></i> Links verificados
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-slate-800">
+    <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <div class="text-xs text-slate-400">
+        © <span id="year"></span> Saúde Natural. Todos os direitos reservados.
+      </div>
+
+      <div class="text-xs text-slate-400">
+        <!-- Esses botões abrem os modais que você JÁ TEM no HTML -->
+        <button id="openPriv"
+          class="underline underline-offset-2 decoration-slate-600/40 hover:text-slate-300 hover:decoration-slate-300 transition">
+          Política de Privacidade
+        </button>
+        <span class="mx-2">•</span>
+        <button id="openAfiliado"
+          class="underline underline-offset-2 decoration-slate-600/40 hover:text-slate-300 hover:decoration-slate-300 transition">
+          Aviso Legal de Afiliados
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Redes sociais -->
+  <div class="text-center py-6 space-x-6">
+    <a href="https://twitter.com/saudenaturalgbl" target="_blank" rel="noopener noreferrer"
+      aria-label="X / Twitter" class="inline-block text-slate-400 hover:text-emerald-500">
+      <i data-lucide="twitter" class="h-5 w-5"></i>
+    </a>
+    <a href="https://www.tiktok.com/@saudenaturalglobal" target="_blank" rel="noopener noreferrer"
+      aria-label="TikTok" class="inline-block text-slate-400 hover:text-emerald-500">
+      <i data-lucide="music" class="h-5 w-5"></i>
+    </a>
+    <a href="https://facebook.com/profile.php?id=61567851986690" target="_blank" rel="noopener noreferrer"
+      aria-label="Facebook" class="inline-block text-slate-400 hover:text-emerald-500">
+      <i data-lucide="facebook" class="h-5 w-5"></i>
+    </a>
+    <a href="https://www.instagram.com/saudenaturalglobal/" target="_blank" rel="noopener noreferrer"
+      aria-label="Instagram" class="inline-block text-slate-400 hover:text-emerald-500">
+      <i data-lucide="instagram" class="h-5 w-5"></i>
+    </a>
+  </div>
+
+  <script>
+    (function () {
+      var el = document.getElementById("year");
+      if (el) el.textContent = new Date().getFullYear();
+    })();
+  </script>
+</footer>
 
  <!-- ============================================================= AQUI SEPARA DOIS CONTEUDOS DIFERENTES  ===================================================================================== -->
 
