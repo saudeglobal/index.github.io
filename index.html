@@ -842,7 +842,7 @@
 
 <!-- Footer -->
 <footer class="bg-slate-900 text-slate-200">
-  <div class="container mx-auto px-4 py-14 grid md:grid-cols-3 gap-10">
+  <div class="container mx-auto px-4 py-10 grid md:grid-cols-3 gap-10">
     <div>
       <div class="flex items-center gap-3">
         <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-emerald-200">
@@ -880,7 +880,7 @@
   </div>
 
   <div class="border-t border-slate-800">
-    <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
       <div class="text-xs text-slate-400">
         © <span id="year"></span> Saúde Natural. Todos os direitos reservados.
       </div>
@@ -901,14 +901,14 @@
   </div>
 
   <!-- Redes sociais -->
-  <div class="text-center py-6 space-x-6">
+  <div class="text-center py-4 space-x-6">
     <a href="https://twitter.com/saudenaturalgbl" target="_blank" rel="noopener noreferrer"
       aria-label="X / Twitter" class="inline-block text-slate-400 hover:text-emerald-500">
       <i data-lucide="twitter" class="h-5 w-5"></i>
     </a>
     <a href="https://www.tiktok.com/@saudenaturalglobal" target="_blank" rel="noopener noreferrer"
       aria-label="TikTok" class="inline-block text-slate-400 hover:text-emerald-500">
-      <i data-lucide="music" class="h-5 w-5"></i>
+      <i data-lucide="music-2" class="h-5 w-5"></i>
     </a>
     <a href="https://facebook.com/profile.php?id=61567851986690" target="_blank" rel="noopener noreferrer"
       aria-label="Facebook" class="inline-block text-slate-400 hover:text-emerald-500">
@@ -1123,5 +1123,42 @@
         </div>
       </div>
     </div>
-  
+  <!-- ##################### fim do footer e script ---para novo script de contagem ##############################################  -->
+      <script>
+(function () {
+  function track(name, params) {
+    if (!window.gtag) return;
+    gtag('event', name, params || {});
+  }
+
+  document.addEventListener('click', function (e) {
+    const a = e.target.closest('a');
+    if (!a || !a.href) return;
+
+    const href = a.href;
+
+    // 1) Afiliados Amazon / nplink
+    const isAmazon = /amazon\./i.test(href) || /amzn\.to/i.test(href);
+    const isNplink = /nplink\.net/i.test(href);
+    if (isAmazon || isNplink) {
+      track('affiliate_click', {
+        link_url: href,
+        link_text: (a.textContent || '').trim().slice(0, 60),
+        page_path: location.pathname
+      });
+      return;
+    }
+
+    // 2) Redes sociais (rodapé)
+    const isSocial = /(twitter\.com|x\.com|tiktok\.com|instagram\.com|facebook\.com)/i.test(href);
+    if (isSocial) {
+      track('social_click', {
+        link_url: href,
+        page_path: location.pathname
+      });
+    }
+  }, true);
+})();
+</script>
+
 </body></html>
