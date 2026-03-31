@@ -4,34 +4,45 @@
   <meta charset="UTF-8">
   <title>{{title}}</title>
   <meta name="description" content="{{description}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-white text-zinc-800">
 
-<header class="bg-emerald-700 text-white">
-  <div class="max-w-4xl mx-auto px-4 py-5">
-    <a href="/" class="text-xl font-bold">Saúde Natural Global</a>
+<!-- HEADER -->
+<header class="bg-emerald-700 text-white shadow">
+  <div class="max-w-5xl mx-auto px-4 py-5 flex justify-between items-center">
+    <a href="/" class="text-xl font-bold tracking-tight">
+      Saúde Natural Global
+    </a>
+
+    <a href="/#produtos"
+      class="bg-white text-emerald-700 px-4 py-2 rounded-lg font-semibold hover:bg-zinc-100">
+      Ver Produtos
+    </a>
   </div>
 </header>
 
+<!-- CONTEÚDO -->
 <main class="max-w-3xl mx-auto px-4 py-10">
 
-  <!-- HERO -->
-  <h1 class="text-3xl md:text-4xl font-bold mb-4">
+  <!-- TÍTULO -->
+  <h1 class="text-3xl md:text-4xl font-bold leading-tight mb-4">
     {{h1}}
   </h1>
 
-  <p class="text-lg text-zinc-600 mb-8">
+  <!-- INTRO -->
+  <p class="text-lg text-zinc-600 mb-8 leading-relaxed">
     {{intro}}
   </p>
 
-  <!-- CONTEÚDO -->
-  <div class="space-y-5 text-lg leading-relaxed">
+  <!-- TEXTO -->
+  <div class="space-y-6 text-lg leading-relaxed text-zinc-700">
 
     <p>
       Ossos enfraquecem. Músculos deixam de proteger.
-      E o que era simples começa a ficar difícil.
+      E o que antes era simples começa a exigir mais esforço.
     </p>
 
     <p>
@@ -40,70 +51,82 @@
     </p>
 
     <p>
-      Isso não acontece de um dia para o outro.
-      O corpo dá sinais — e muita gente ignora.
+      Isso não acontece de repente.
+      O corpo dá sinais — e muita gente ignora até ser tarde.
     </p>
 
   </div>
 
-  <!-- BLOCO DE CONVERSÃO -->
-  <div class="mt-10 bg-zinc-50 p-6 rounded-2xl border">
+  <!-- BLOCO PRINCIPAL DE CONVERSÃO (MELHORADO) -->
+  <div class="mt-12 bg-gradient-to-b from-emerald-50 to-white border border-emerald-100 p-6 rounded-2xl shadow-sm">
 
-    <h2 class="text-xl font-bold mb-4">
-      3 nutrientes essenciais para manter força e energia
+    <h2 class="text-2xl font-bold mb-2">
+      O que pode ajudar seu corpo agora
     </h2>
 
-    <!-- MAGNESIO -->
-    <div class="mb-5">
-      <h3 class="font-semibold text-lg">Magnésio</h3>
-      <p class="text-sm text-zinc-600 mb-2">
-        Ajuda na função muscular e energia do corpo.
-      </p>
-      <a href="https://meli.la/1ygT75Z" target="_blank"
-      class="inline-block bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700">
-        Ver opções de Magnésio
-      </a>
-    </div>
+    <p class="text-zinc-600 mb-6">
+      Algumas pessoas recorrem a nutrientes específicos para apoiar a força, energia e estrutura do corpo.
+    </p>
 
-    <!-- VITAMINA D -->
-    <div class="mb-5">
-      <h3 class="font-semibold text-lg">Vitamina D</h3>
-      <p class="text-sm text-zinc-600 mb-2">
-        Essencial para absorção de cálcio.
-      </p>
-      <a href="https://meli.la/2ZPEegB" target="_blank"
-      class="inline-block bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700">
-        Ver opções de Vitamina D
-      </a>
-    </div>
+    <div class="space-y-5">
 
-    <!-- CALCIO -->
-    <div>
-      <h3 class="font-semibold text-lg">Cálcio</h3>
-      <p class="text-sm text-zinc-600 mb-2">
-        Base da estrutura óssea.
-      </p>
-      <a href="https://meli.la/12mMQLx" target="_blank"
-      class="inline-block bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700">
-        Ver opções de Cálcio
-      </a>
+      <!-- MAGNESIO -->
+      <div class="p-4 bg-white rounded-xl border hover:shadow transition">
+        <h3 class="font-semibold text-lg mb-1">Magnésio</h3>
+        <p class="text-sm text-zinc-600 mb-3">
+          Contribui para função muscular e energia diária.
+        </p>
+        <a href="https://meli.la/1ygT75Z" target="_blank"
+        class="block text-center bg-[#1e8449] text-white py-3 rounded-lg font-semibold hover:bg-[#e67e22] transition">
+          Ver opções disponíveis
+        </a>
+      </div>
+
+      <!-- VITAMINA D -->
+      <div class="p-4 bg-white rounded-xl border hover:shadow transition">
+        <h3 class="font-semibold text-lg mb-1">Vitamina D</h3>
+        <p class="text-sm text-zinc-600 mb-3">
+          Auxilia na absorção de cálcio e suporte geral do corpo.
+        </p>
+        <a href="https://meli.la/2ZPEegB" target="_blank"
+        class="block text-center bg-[#1e8449] text-white py-3 rounded-lg font-semibold hover:bg-[#e67e22] transition">
+          Ver opções disponíveis
+        </a>
+      </div>
+
+      <!-- CALCIO -->
+      <div class="p-4 bg-white rounded-xl border hover:shadow transition">
+        <h3 class="font-semibold text-lg mb-1">Cálcio</h3>
+        <p class="text-sm text-zinc-600 mb-3">
+          Essencial para estrutura e resistência dos ossos.
+        </p>
+        <a href="https://meli.la/12mMQLx" target="_blank"
+        class="block text-center bg-[#1e8449] text-white py-3 rounded-lg font-semibold hover:bg-[#e67e22] transition">
+          Ver opções disponíveis
+        </a>
+      </div>
+
     </div>
 
   </div>
 
-  <!-- CTA FINAL -->
-  <div class="mt-10 text-center">
-    <p class="text-lg mb-4">
-      Cuidar do corpo hoje é preservar sua independência amanhã.
+  <!-- CTA FINAL FORTE -->
+  <div class="mt-12 text-center">
+
+    <p class="text-xl font-semibold mb-4">
+      Ignorar os sinais hoje pode custar sua independência amanhã
     </p>
-    <a href="#"
-    class="bg-emerald-700 text-white px-6 py-3 rounded-xl hover:bg-emerald-800">
+
+    <a href="https://meli.la/1ygT75Z" target="_blank"
+    class="inline-block bg-emerald-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-800 transition">
       Ver opções recomendadas
     </a>
+
   </div>
 
 </main>
 
+<!-- RODAPÉ -->
 <footer class="mt-12 border-t py-6 text-center text-sm text-zinc-500">
   Conteúdo informativo • Pode conter links de afiliado
 </footer>
