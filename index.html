@@ -103,12 +103,19 @@
         <a href="/ferramentas.html" class="text-slate-700 hover:text-emerald-700 font-medium">Ferramentas</a>
         <a href="https://saudenaturalglobal.com.br/sobre-nos.html" class="text-slate-700 hover:text-emerald-700 font-medium">Sobre</a>
       </nav>
-
-      <button id="menuBtn" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-md border border-slate-200" aria-label="Abrir menu">
-        <svg id="menuIcon" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
+<button
+  id="menuBtn"
+  type="button"
+  class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-md border border-slate-200"
+  aria-label="Abrir menu"
+  aria-expanded="false"
+  aria-controls="mobileNav"
+>
+  <svg id="menuIcon" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+  </svg>
+</button>
+      
     </div>
 
     <div id="mobileNav" class="hidden md:hidden border-t border-slate-100 bg-white">
@@ -1071,5 +1078,77 @@
       }, true);
     })();
   </script>
+  <!-- Menu principal -->
+
+  <script>
+  (function () {
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const menuIcon = document.getElementById('menuIcon');
+
+    if (!menuBtn || !mobileNav) return;
+
+    function openMenu() {
+      mobileNav.classList.remove('hidden');
+      menuBtn.setAttribute('aria-label', 'Fechar menu');
+      menuBtn.setAttribute('aria-expanded', 'true');
+
+      if (menuIcon) {
+        menuIcon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        `;
+      }
+    }
+
+    function closeMenu() {
+      mobileNav.classList.add('hidden');
+      menuBtn.setAttribute('aria-label', 'Abrir menu');
+      menuBtn.setAttribute('aria-expanded', 'false');
+
+      if (menuIcon) {
+        menuIcon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        `;
+      }
+    }
+
+    menuBtn.addEventListener('click', function () {
+      const isHidden = mobileNav.classList.contains('hidden');
+      if (isHidden) {
+        openMenu();
+      } else {
+        closeMenu();
+      }
+    });
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('click', function (e) {
+      const clickedInsideMenu = mobileNav.contains(e.target);
+      const clickedButton = menuBtn.contains(e.target);
+
+      if (!mobileNav.classList.contains('hidden') && !clickedInsideMenu && !clickedButton) {
+        closeMenu();
+      }
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 768) {
+        closeMenu();
+      }
+    });
+  })();
+</script>
+<!-- fim menu principal -->
+<!--para funcionar os ícones -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+</script>
+
 </body>
 </html>
