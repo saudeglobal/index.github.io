@@ -81,6 +81,19 @@
       "cta_url": "https://meli.la/2ZPEegB",
       "body_file": "crianca-falta-nutrientes.html",
       "evidence": "Alimentação equilibrada, sono, rotina, atividade física e ingestão adequada de nutrientes influenciam energia, disposição e desenvolvimento. Este conteúdo é educativo e não substitui orientação profissional."
+    },
+    {
+      "slug": "primeiros-2-anos-alimentacao-e-suplementos",
+      "pillar": "nutricao-fases-da-vida",
+      "title": "Primeiros 2 anos: como alimentar bem e quando avaliar suplementos",
+      "h1": "Primeiros 2 anos: como alimentar bem e quando avaliar suplementos",
+      "description": "Entenda o que realmente importa na alimentação dos primeiros 2 anos, o que evitar e quando suplementos podem fazer sentido.",
+      "intro": "Nos primeiros 2 anos, o corpo cresce rápido, o cérebro se desenvolve intensamente e a alimentação ajuda a construir a base da saúde. Nessa fase, comida de verdade e rotina adequada vêm antes de qualquer suplemento.",
+      "read_time": "6–8 min",
+      "date_modified": "2026-04-05",
+      "cta_url": "/produtos.html",
+      "image": "/img/primeiros-2-anos-alimentacao.jpg",
+      "evidence": "OMS + Ministério da Saúde + Guia Alimentar para a População Brasileira"
     }
     ]
 }
