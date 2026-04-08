@@ -186,74 +186,78 @@
 
     
     <!-- JSON-LD: ItemList + Product + Review -->
-    <script type="application/ld+json">
+    <!-- JSON-LD: ItemList + Product -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Produtos em Destaque",
+  "itemListOrder": "https://schema.org/ItemListOrderAscending",
+  "numberOfItems": 3,
+  "itemListElement": [
     {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "Produtos em Destaque",
-      "itemListOrder": "https://schema.org/ItemListOrderAscending",
-      "numberOfItems": 3,
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "item": {
-            "@type": "Product",
-            "name": "Ômega-3 Premium",
-            "image": "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop",
-            "description": "Uma opção comum para quem busca incluir ômega-3 na rotina de forma prática.",
-            "brand": {"@type": "Brand","name": "Diversas"},
-            "aggregateRating": {"@type": "AggregateRating","ratingValue": "4.7","reviewCount": "3200"},
-            "review": {
-              "@type": "Review",
-              "author": {"@type": "Organization","name": "Saúde Natural Global"},
-              "reviewRating": {"@type": "Rating","ratingValue": "5"},
-              "reviewBody": "Excelente pureza e benefícios cardiovasculares; recomendamos com orientação profissional."
-            },
-            "offers": {"@type": "Offer","priceCurrency": "BRL","availability": "https://schema.org/InStock","url": "https://amzn.to/4vhvd4r?tag=saudenaturalglobal.com.br-20"}
-          }
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Product",
+        "name": "Ômega 3 EPA DHA 120 Cápsulas Dark Lab",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_882777-MLA99444301404_112025-F.webp",
+        "description": "Opção para quem deseja incluir ômega 3 EPA e DHA na rotina com mais praticidade.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Dark Lab"
         },
-        {
-        "@type": "ListItem",
-        "position": 2,
-        "item": {
-          "@type": "Product",
-          "name": "Creatina Monohidratada",
-          "image": "https://m.media-amazon.com/images/I/81zl9Hft9uL._AC_SL1500_.jpg",
-          "description": "Pode fazer sentido para quem busca apoio em treino, força e recuperação.",
-          "brand": {"@type": "Brand","name": "Diversas"},
-          "aggregateRating": {"@type": "AggregateRating","ratingValue": "4.6","reviewCount": "1000"},
-          "review": {
-            "@type": "Review",
-            "author": {"@type": "Organization","name": "Saúde Natural Global"},
-            "reviewRating": {"@type": "Rating","ratingValue": "4.8"},
-            "reviewBody": "Pode ser uma opção prática para rotinas com foco em treino, força e recuperação."
-            },
-            "offers": {"@type": "Offer","priceCurrency": "BRL","availability": "https://schema.org/InStock","url": "https://amzn.to/4q5BCNN?tag=saudenaturalglobal.com.br-20"}
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "item": {
-            "@type": "Product",
-            "name": "Fast Burn Extreme",
-            "image": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop",
-            "description": "Voltado a rotinas com foco em controle de peso; vale avaliar composição e sensibilidade à cafeína.",
-            "brand": {"@type": "Brand","name": "Diversas"},
-            "aggregateRating": {"@type": "AggregateRating","ratingValue": "4.6","reviewCount": "980"},
-            "review": {
-              "@type": "Review",
-              "author": {"@type": "Organization","name": "Saúde Natural Global"},
-              "reviewRating": {"@type": "Rating","ratingValue": "4.8"},
-              "reviewBody": "Eficaz para energia e queima; evitar à noite se sensível à cafeína."
-            },
-            "offers": {"@type": "Offer","priceCurrency": "BRL","availability": "https://schema.org/InStock","url": "https://amzn.to/3KJOKbc?tag=saudenaturalglobal.com.br-20"}
-          }
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/InStock",
+          "url": "https://meli.la/1hMipAk"
         }
-      ]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Product",
+        "name": "Creatina Monohidratada 300g 100% Pura Dark Lab",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_803521-MLU77243515945_062024-F.webp",
+        "description": "Creatina monohidratada em pote de 300g para rotinas com foco em treino, força e recuperação.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Dark Lab"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/InStock",
+          "url": "https://meli.la/1hxYsFb"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Product",
+        "name": "Kit 3x Termogênico Xburn Xtreme Complex 60 Cápsulas",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_842640-MLB98483183871_112025-F.webp",
+        "description": "Kit de termogênico para rotinas com foco em energia e controle de peso, com atenção à sensibilidade à cafeína.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Espartanos"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/InStock",
+          "url": "https://meli.la/1GyHxDD"
+        }
+      }
     }
-    </script>
+  ]
+}
+</script>
   </section>
   
   <!-- Livros -->
@@ -496,7 +500,7 @@
           </p>
         </div>
 
-        <a href="artigos/" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold">
+        <a href="/artigos/" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold">
         Ler todos os conteúdos →
         </a>
       </div>
@@ -520,7 +524,7 @@
             </div>
             <div class="mt-4 flex items-center justify-between">
               <span class="text-xs text-slate-500">Leitura: 7–9 min</span>
-              <a href="artigos/energia-mais-disposicao-rotina.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
+              <a href="/artigos/energia-mais-disposicao-rotina.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
                 Ler conteúdo →
               </a>
             </div>
@@ -546,7 +550,7 @@
             </div>
             <div class="mt-4 flex items-center justify-between">
               <span class="text-xs text-slate-500">Leitura: 7–9 min</span>
-              <a href="artigos/imunidade-rotina-vitamina-d-zinco.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
+              <a href="/artigos/imunidade-rotina-vitamina-d-zinco.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
                 Ler conteúdo →
               </a>
             </div>
@@ -571,7 +575,7 @@
             </div>
             <div class="mt-4 flex items-center justify-between">
               <span class="text-xs text-slate-500">Leitura: 6–8 min</span>
-              <a href="artigos/magnesio-beneficios-como-tomar.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
+              <a href="/artigos/magnesio-beneficios-como-tomar.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
                 Ler conteúdo →
               </a>
             </div>
@@ -596,7 +600,7 @@
             </div>
             <div class="mt-4 flex items-center justify-between">
               <span class="text-xs text-slate-500">Leitura: 6–8 min</span>
-              <a href="artigos/potassio-beneficios-como-tomar.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
+              <a href="/artigos/potassio-beneficios-como-tomar.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
                 Ler conteúdo →
               </a>
             </div>
@@ -621,7 +625,7 @@
             </div>
             <div class="mt-4 flex items-center justify-between">
               <span class="text-xs text-slate-500">Leitura: 5–7 min</span>
-              <a href="artigos/top-10-livros-saude-natural-amazon-2025.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
+              <a href="/artigos/top-10-livros-saude-natural-amazon-2025.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
                 Ler conteúdo →
               </a>
             </div>
@@ -646,7 +650,7 @@
             </div>
             <div class="mt-4 flex items-center justify-between">
               <span class="text-xs text-slate-500">Leitura: 4–6 min</span>
-              <a href="artigos/guia-rapido-como-escolher-suplementos.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
+              <a href="/artigos/guia-rapido-como-escolher-suplementos.html" class="inline-flex items-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm">
                 Ler conteúdo →
               </a>
             </div>
@@ -678,15 +682,14 @@
             <span class="absolute left-3 top-3 bg-emerald-600 text-white text-xs font-bold rounded-full px-2 py-1">Escolha popular</span>
           </div>
           <div class="p-4">
-            <h4 class="font-semibold"><a href="https://amzn.to/3WzGw84?tag=saudenaturalglobal.com.br-20">Ômega-3 Premium</a></h4>
+            <h4 class="font-semibold"><a href="https://meli.la/28EBjJq">Ômega 3 Catarinense 120 Cápsulas 1000mg Oleo de Peixe</a></h4>
             <div class="mt-1 flex items-center gap-2">
               <div class="text-amber-500 flex">
                 <i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star-half" class="h-4 w-4"></i>
               </div>
-              <span class="text-xs text-slate-500">4.7 (3.2k) na Amazon</span>
             </div>
             <p class="mt-2 text-sm text-slate-600">Uma opção comum para quem busca incluir ômega-3 na rotina de forma prática.</p>
-            <a target="_blank" rel="nofollow noopener sponsored" href="https://amzn.to/3WzGw84?tag=saudenaturalglobal.com.br-20" class="mt-3 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-white font-semibold bg-[#1e8449] hover:bg-[#e67e22]">
+            <a target="_blank" rel="nofollow noopener sponsored" href="https://meli.la/28EBjJq" class="mt-3 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-white font-semibold bg-[#1e8449] hover:bg-[#e67e22]">
             Ver detalhes
             <i data-lucide="lock" class="h-4 w-4 ml-2"></i>
             </a>
@@ -701,15 +704,14 @@
             <span class="absolute left-3 top-3 bg-emerald-600 text-white text-xs font-bold rounded-full px-2 py-1">Rotina ativa</span>
           </div>
           <div class="p-4">
-            <h4 class="font-semibold">Creatina Monohidratada</h4>
+            <h4 class="font-semibold">Creatina Monohidratada em Pote 300g 100% Pura Dark Lab</h4>
             <div class="mt-1 flex items-center gap-2">
               <div class="text-amber-500 flex">
                 <i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i>
               </div>
-              <span class="text-xs text-slate-500">4,6 de 5 na Amazon</span>
             </div>
-            <p class="mt-2 text-sm text-slate-600">Pode fazer sentido para quem busca apoio em treino, força e recuperação.</p>
-            <a target="_blank" rel="nofollow noopener sponsored" href="https://amzn.to/4q5BCNN?tag=saudenaturalglobal.com.br-20" class="mt-3 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-white font-semibold bg-[#1e8449] hover:bg-[#e67e22]">
+            <p class="mt-2 text-sm text-slate-600">Pode fazer sentido para quem busca Energia, apoio em treino, força e recuperação.</p>
+            <a target="_blank" rel="nofollow noopener sponsored" href="https://meli.la/1hxYsFb" class="mt-3 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-white font-semibold bg-[#1e8449] hover:bg-[#e67e22]">
               Ver detalhes
               <i data-lucide="lock" class="h-4 w-4 ml-2"></i>
             </a>
@@ -724,15 +726,14 @@
             <span class="absolute left-3 top-3 bg-emerald-600 text-white text-xs font-bold rounded-full px-2 py-1">Controle de peso</span>
           </div>
           <div class="p-4">
-            <h4 class="font-semibold">Fast Burn Extreme</h4>
+            <h4 class="font-semibold">Kit 3x Termogênico Xburn Xtreme Complex 60 Cáps</h4>
             <div class="mt-1 flex items-center gap-2">
               <div class="text-amber-500 flex">
                 <i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star" class="h-4 w-4"></i><i data-lucide="star-half" class="h-4 w-4"></i>
               </div>
-              <span class="text-xs text-slate-500">Avalie na Amazon</span>
             </div>
-            <p class="mt-2 text-sm text-slate-600">Voltado a rotinas com foco em controle de peso; vale avaliar composição e sensibilidade à cafeína.</p>
-            <a target="_blank" rel="nofollow noopener sponsored" href="https://amzn.to/3KJOKbc?tag=saudenaturalglobal.com.br-20" class="mt-3 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-white font-semibold bg-[#1e8449] hover:bg-[#e67e22]">
+            <p class="mt-2 text-sm text-slate-600">X Burn é um suplemento termogênico formulado com a composição ideal para praticantes de atividades físicas que buscam a queima de gordura e definição corporal.</p>
+            <a target="_blank" rel="nofollow noopener sponsored" href="https://meli.la/1GyHxDD" class="mt-3 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-white font-semibold bg-[#1e8449] hover:bg-[#e67e22]">
               Ver detalhes
               <i data-lucide="lock" class="h-4 w-4 ml-2"></i>
             </a>
