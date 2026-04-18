@@ -777,32 +777,33 @@
   const OFFERS_FALLBACK = "https://nutriprofits.com/account/offers";
 
   const ofertasBrasil = [
-    { name: "Restilen", category: "Stress",
+    {
+      name: "Restilen",
+      category: "Stress",
       img: "https://nutriprofits.com/src/template/backend/uploads/image_1605792202.png",
-      desc: "Auxilia no controle do estresse.", url: "https://nplink.net/w3hcj5cg" },
-
-    { name: "Locerin", category: "Hair Loss",
-      img: "https://nutriprofits.com/src/template/backend/uploads/image_1721282412.jpg",
-      desc: "Fortalecimento capilar.", url: "https://nplink.net/galjhy5w" },
-
-    { name: "Green Barley Plus", category: "Weight Loss",
+      desc: "Opção voltada ao bem-estar e ao manejo do estresse, algo que pode impactar energia e disposição no dia a dia.",
+      url: "https://nplink.net/w3hcj5cg"
+    },
+    {
+      name: "Green Barley Plus",
+      category: "Energy",
       img: "https://nutriprofits.com/src/template/backend/uploads/image_1551533382.jpg",
-      desc: "Suporte ao emagrecimento.", url: "https://nplink.net/sbp00dlg" },
-
-    { name: "Profolan", category: "Hair Loss",
-      img: "https://nutriprofits.com/src/template/backend/uploads/image_1546171023.jpg",
-      desc: "Cuidado capilar masculino.", url: "https://nplink.net/8npbfkdf" },
-
-    { name: "NuviaLab", category: "General",
+      desc: "Produto associado a rotinas de vitalidade, leveza e suporte nutricional no dia a dia.",
+      url: "https://nplink.net/sbp00dlg"
+    },
+    {
+      name: "NuviaLab",
+      category: "Supplements",
       img: "https://nutriprofits.com/src/template/backend/uploads/image_1615191887.png",
-      desc: "Loja/brand NuviaLab em vários nichos.", url: "https://nplink.net/39sshhjo" }
+      desc: "Linha com diferentes suplementos e produtos de bem-estar, em página de compra em português.",
+      url: "https://nplink.net/39sshhjo"
+    }
   ];
 
   const categoryMap = {
     "Stress": "Estresse",
-    "Hair Loss": "Cabelo",
-    "Weight Loss": "Controle de peso",
-    "General": "Bem-estar"
+    "Energy": "Energia",
+    "Supplements": "Suplementos"
   };
 
   (function renderOfertasBR(){
@@ -826,10 +827,10 @@
 
         a.href = finalUrl;
         img.src = item.img || "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop";
-        img.alt = item.name || "Oferta de produto natural";
+        img.alt = item.name || "Oferta de suplemento";
         cat.textContent = categoryMap[item.category] || item.category || "Categoria";
         nome.textContent = item.name || "Nome da Oferta";
-        desc.textContent = item.desc || "Descrição breve do produto/benefícios.";
+        desc.textContent = item.desc || "Descrição breve do produto.";
 
         grid.appendChild(node);
       });
