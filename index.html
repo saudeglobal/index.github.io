@@ -905,18 +905,11 @@
       </a>-->
     </div>
  <! -- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
-    <script>
+   <script>
   const OFFERS_FALLBACK = "https://nutriprofits.com/account/offers";
 
   const ofertasBrasil = [
-    /*{
-      name: "Green Barley Plus",
-      category: "Energy",
-      img: "https://nutriprofits.com/src/template/backend/uploads/image_1551533382.jpg",
-      desc: "Produto associado a rotinas de vitalidade, leveza e suporte nutricional no dia a dia.",
-      url: "https://nplink.net/sbp00dlg"
-    },-->
-    */
+    {
       name: "Restilen",
       category: "Stress",
       img: "https://nutriprofits.com/src/template/backend/uploads/image_1605792202.png",
@@ -933,16 +926,17 @@
   ];
 
   const categoryMap = {
-  "Stress": "Estresse",
-  "Supplements": "Suplementos"
-};
+    "Stress": "Estresse",
+    "Supplements": "Suplementos",
+    "Sleep": "Sono"
+  };
 
   function getTargetGrid(category) {
     if (category === "Supplements") return document.getElementById("grid-energia");
     if (category === "Stress") return document.getElementById("grid-estresse");
     if (category === "Sleep") return document.getElementById("grid-sono");
     return document.getElementById("grid-energia");
-    }
+  }
 
   (function renderOfertasBR() {
     const tpl = document.getElementById("tpl-card-oferta");
@@ -978,7 +972,8 @@
     });
 
     if (!document.getElementById("grid-sono").children.length) {
-      document.getElementById("grid-sono").innerHTML = '<p class="text-sm text-slate-500">Em breve, novas opções relacionadas a sono e recuperação.</p>';
+      document.getElementById("grid-sono").innerHTML =
+        '<p class="text-sm text-slate-500">Em breve, novas opções relacionadas a sono e recuperação.</p>';
     }
   })();
 </script>
