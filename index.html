@@ -550,34 +550,34 @@
       </p>
     </div>
 
-    <div id="energia" class="mb-6">
+    <div id="energia" class="scroll-mt-28 mb-6">
       <h3 class="text-xl font-semibold text-slate-900">
         Energia e disposição
       </h3>
       <p class="text-sm text-slate-600 mt-1">
         Opções que fazem sentido quando o cansaço pode estar ligado à rotina e nutrientes.
       </p>
-      <div id="grid-energia" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4"></div>
+      <div id="grid-energia" class="grid gap-6 max-w-[520px] mt-4"></div>
     </div>
 
-    <div id="sono" class="mt-10 mb-6">
+    <div id="sono" class="scroll-mt-28 mt-10 mb-6">
       <h3 class="text-xl font-semibold text-slate-900">
         Sono e recuperação
       </h3>
       <p class="text-sm text-slate-600 mt-1">
         Para quando o problema não é dormir pouco, mas não recuperar energia.
       </p>
-      <div id="grid-sono" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4"></div>
+      <div id="grid-sono" class="grid gap-6 max-w-[520px] mt-4"></div>
     </div>
 
-    <div id="estresse" class="mt-10 mb-6">
+    <div id="estresse" class="scroll-mt-28 mt-10 mb-6">
       <h3 class="text-xl font-semibold text-slate-900">
         Estresse e desgaste mental
       </h3>
       <p class="text-sm text-slate-600 mt-1">
         Fatores que podem drenar energia ao longo do dia sem você perceber.
       </p>
-      <div id="grid-estresse" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4"></div>
+      <div id="grid-estresse" class="grid gap-6 max-w-[520px] mt-4"></div>
     </div>
 
     <template id="tpl-card-oferta">
@@ -913,22 +913,22 @@
       name: "Restilen",
       category: "Stress",
       img: "https://nutriprofits.com/src/template/backend/uploads/image_1605792202.png",
-      desc: "Opção voltada ao bem-estar e ao manejo do estresse, algo que pode impactar energia e disposição no dia a dia.",
+      desc: "Opção voltada ao manejo do estresse e da tensão do dia a dia, algo que pode afetar energia, foco e disposição.",
       url: "https://nplink.net/w3hcj5cg"
     },
     {
       name: "NuviaLab",
       category: "Supplements",
       img: "https://nutriprofits.com/src/template/backend/uploads/image_1615191887.png",
-      desc: "Linha com diferentes suplementos e produtos de bem-estar, em página de compra em português.",
+      desc: "Linha com suplementos voltados ao bem-estar e à rotina, para quem quer explorar opções com mais clareza e praticidade.",
       url: "https://nplink.net/39sshhjo"
     }
   ];
 
   const categoryMap = {
-    "Stress": "Estresse",
-    "Supplements": "Suplementos",
-    "Sleep": "Sono"
+  "Stress": "Estresse",
+  "Supplements": "Energia",
+  "Sleep": "Sono"
   };
 
   function getTargetGrid(category) {
