@@ -553,7 +553,6 @@
         Selecionamos apenas opções que fazem sentido para rotinas reais — sem excesso, sem promessas exageradas.
         </p>
       </div>
-      <!-- BLOCO ENERGIA -->
       <div id="energia" class="mb-6">
         <h3 class="text-xl font-semibold text-slate-900">
           Energia e disposição
@@ -562,7 +561,8 @@
           Opções que fazem sentido quando o cansaço pode estar ligado à rotina e nutrientes.
         </p>
       </div>
-      <!-- BLOCO SONO -->
+      <div id="grid-energia" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+      
       <div id="sono" class="mt-10 mb-6">
         <h3 class="text-xl font-semibold text-slate-900">
           Sono e recuperação
@@ -571,8 +571,8 @@
           Para quando o problema não é dormir pouco, mas não recuperar energia.
         </p>
       </div>
+      <div id="grid-sono" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
       
-      <!-- BLOCO ESTRESSE -->
       <div id="estresse" class="mt-10 mb-6">
         <h3 class="text-xl font-semibold text-slate-900">
           Estresse e desgaste mental
@@ -581,7 +581,8 @@
           Fatores que podem drenar energia ao longo do dia sem você perceber.
         </p>
       </div>
-      <div id="grid-ofertas-br" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+      <div id="grid-estresse" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+            <div id="grid-ofertas-br" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
 
       <template id="tpl-card-oferta">
         <article class="rounded-2xl border border-emerald-100 bg-white overflow-hidden hover:shadow-lg transition">
@@ -909,29 +910,22 @@
     </div>
  <! -- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
     <script>
-      (function () {
-        var el = document.getElementById("year");
-        if (el) el.textContent = new Date().getFullYear();
-      })();
-    </script>
-  </footer>
-  <script>
   const OFFERS_FALLBACK = "https://nutriprofits.com/account/offers";
 
   const ofertasBrasil = [
-    {
-      name: "Restilen",
-      category: "Stress",
-      img: "https://nutriprofits.com/src/template/backend/uploads/image_1605792202.png",
-      desc: "Opção voltada ao bem-estar e ao manejo do estresse, algo que pode impactar energia e disposição no dia a dia.",
-      url: "https://nplink.net/w3hcj5cg"
-    },
     {
       name: "Green Barley Plus",
       category: "Energy",
       img: "https://nutriprofits.com/src/template/backend/uploads/image_1551533382.jpg",
       desc: "Produto associado a rotinas de vitalidade, leveza e suporte nutricional no dia a dia.",
       url: "https://nplink.net/sbp00dlg"
+    },
+    {
+      name: "Restilen",
+      category: "Stress",
+      img: "https://nutriprofits.com/src/template/backend/uploads/image_1605792202.png",
+      desc: "Opção voltada ao bem-estar e ao manejo do estresse, algo que pode impactar energia e disposição no dia a dia.",
+      url: "https://nplink.net/w3hcj5cg"
     },
     {
       name: "NuviaLab",
@@ -948,37 +942,48 @@
     "Supplements": "Suplementos"
   };
 
-  (function renderOfertasBR(){
-    const grid = document.getElementById("grid-ofertas-br");
+  function getTargetGrid(category) {
+    if (category === "Energy" || category === "Supplements") return document.getElementById("grid-energia");
+    if (category === "Sleep") return document.getElementById("grid-sono");
+    if (category === "Stress") return document.getElementById("grid-estresse");
+    return document.getElementById("grid-energia");
+  }
+
+  (function renderOfertasBR() {
     const tpl = document.getElementById("tpl-card-oferta");
-    if (!grid || !tpl) return;
+    const grids = [
+      document.getElementById("grid-energia"),
+      document.getElementById("grid-sono"),
+      document.getElementById("grid-estresse")
+    ];
 
-    grid.innerHTML = "";
+    if (!tpl || grids.some(g => !g)) return;
 
-    ofertasBrasil
-      .sort((a,b)=> (a.category||"").localeCompare(b.category||"") || (a.name||"").localeCompare(b.name||""))
-      .forEach(item => {
-        const node = tpl.content.cloneNode(true);
-        const a = node.querySelector("a");
-        const img = node.querySelector("img");
-        const cat = node.querySelector(".oferta-categoria");
-        const nome = node.querySelector(".oferta-nome");
-        const desc = node.querySelector(".oferta-desc");
+    grids.forEach(grid => grid.innerHTML = "");
 
-        const finalUrl = item.url && item.url.trim() ? item.url : OFFERS_FALLBACK;
+    ofertasBrasil.forEach(item => {
+      const node = tpl.content.cloneNode(true);
+      const a = node.querySelector("a");
+      const img = node.querySelector("img");
+      const cat = node.querySelector(".oferta-categoria");
+      const nome = node.querySelector(".oferta-nome");
+      const desc = node.querySelector(".oferta-desc");
 
-        a.href = finalUrl;
-        img.src = item.img || "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop";
-        img.alt = item.name || "Oferta de suplemento";
-        cat.textContent = categoryMap[item.category] || item.category || "Categoria";
-        nome.textContent = item.name || "Nome da Oferta";
-        desc.textContent = item.desc || "Descrição breve do produto.";
+      const finalUrl = item.url && item.url.trim() ? item.url : OFFERS_FALLBACK;
 
-        grid.appendChild(node);
-      });
+      a.href = finalUrl;
+      img.src = item.img || "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop";
+      img.alt = item.name || "Oferta de suplemento";
+      cat.textContent = categoryMap[item.category] || item.category || "Categoria";
+      nome.textContent = item.name || "Nome da Oferta";
+      desc.textContent = item.desc || "Descrição breve do produto.";
 
-    if (!ofertasBrasil.length){
-      grid.innerHTML = '<div class="col-span-full text-center text-slate-600">Nenhuma oferta preenchida ainda.</div>';
+      const targetGrid = getTargetGrid(item.category);
+      targetGrid.appendChild(node);
+    });
+
+    if (!document.getElementById("grid-sono").children.length) {
+      document.getElementById("grid-sono").innerHTML = '<p class="text-sm text-slate-500">Em breve, novas opções relacionadas a sono e recuperação.</p>';
     }
   })();
 </script>
