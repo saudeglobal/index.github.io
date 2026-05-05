@@ -557,7 +557,7 @@
       <p class="text-sm text-slate-600 mt-1">
         Opções que fazem sentido quando o cansaço pode estar ligado à rotina e nutrientes.
       </p>
-      <div id="grid-energia" class="grid gap-6 max-w-[520px] mt-4"></div>
+      <div id="grid-energia" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4"></div>
     </div>
 
     <div id="sono" class="scroll-mt-28 mt-10 mb-6">
@@ -577,7 +577,7 @@
         <span class="rounded-full bg-white border border-emerald-100 px-3 py-1">Qualidade do descanso</span>
   </div>
 
-  <div id="grid-sono" class="grid gap-6 max-w-[520px] mt-4"></div>
+  <div id="grid-sono" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4"></div>
 </div>
 
     <div id="estresse" class="scroll-mt-28 mt-10 mb-6">
@@ -587,14 +587,14 @@
       <p class="text-sm text-slate-600 mt-1">
         Fatores que podem drenar energia ao longo do dia sem você perceber.
       </p>
-      <div id="grid-estresse" class="grid gap-6 max-w-[520px] mt-4"></div>
+      <div id="grid-estresse" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4"></div>
     </div>
 
     <template id="tpl-card-oferta">
       <article class="rounded-2xl border border-emerald-100 bg-white overflow-hidden hover:shadow-lg transition">
         <a class="block group" target="_blank" rel="nofollow noopener sponsored" aria-label="Abrir oferta segura">
           <div class="relative">
-            <img class="h-56 w-full object-contain bg-white p-4" alt="">
+            <img class="h-52 w-full object-contain bg-white p-6" alt="">
             <span class="absolute left-3 top-3 bg-emerald-600 text-white text-xs font-bold rounded-full px-2 py-1">Página em português</span>
           </div>
           <div class="p-5">
@@ -978,20 +978,29 @@
         img: "https://http2.mlstatic.com/D_NQ_NP_2X_825728-MLB109704744800_042026-F.webp",
         desc: "Magnésio glicinato quelato em cápsulas. Pode fazer sentido para quem busca apoiar a função muscular, a recuperação do corpo e uma rotina noturna mais equilibrada.",
         url: "/produtos/magnesio-glicinato-sono-recuperacao.html"
+      },
+      {
+        name: "Creatina Monohidratada 300g",
+        category: "Performance",
+        img: "/img/creatina-produto.webp",
+        desc: "Opção relacionada a desempenho físico, força e recuperação muscular dentro de uma rotina mais ativa.",
+        url: "/produtos/creatina-monohidratada-desempenho-recuperacao.html"
       }
     ];
   const categoryMap = {
   "Stress": "Estresse",
   "Supplements": "Energia",
-  "Sleep": "Sono"
-  };
+  "Sleep": "Sono",
+  "Performance": "Performance"
+};
 
   function getTargetGrid(category) {
-    if (category === "Supplements") return document.getElementById("grid-energia");
-    if (category === "Stress") return document.getElementById("grid-estresse");
-    if (category === "Sleep") return document.getElementById("grid-sono");
-    return document.getElementById("grid-energia");
-  }
+  if (category === "Supplements") return document.getElementById("grid-energia");
+  if (category === "Performance") return document.getElementById("grid-energia");
+  if (category === "Stress") return document.getElementById("grid-estresse");
+  if (category === "Sleep") return document.getElementById("grid-sono");
+  return document.getElementById("grid-energia");
+}
 
   (function renderOfertasBR() {
     const tpl = document.getElementById("tpl-card-oferta");
